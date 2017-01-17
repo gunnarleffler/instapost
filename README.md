@@ -28,14 +28,19 @@ instapost is a program to post non SHEF data to CWMS 3.0.0+ databases
 edit the instapost.json to reflect local settings.
 Requires python 2.7.10+ and cx_Oracle.
 
-##Directories
+## Directories
 
-### rfc_utils 
+### /instapost
+Directory which contains the instapost script and dependencies.
+
+### /rfc_utils 
 
 `get_rfc_local` - gets local flow data from NWRFC
+
 `get_rfc_webservice` - gets forecast and observed data from nwrfc XML webservice
+
 `get_ahps` - gets AHPS observed data and official forecasts
 
-### config
-directory to generate config files
+### /config
+Directory with example config files.
 
