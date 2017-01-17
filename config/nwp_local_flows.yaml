@@ -1,0 +1,76 @@
+AGNO3_XE:
+  path: AGNO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+AGSO3_XE:
+  path: AGSO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+ALBO3_XE:
+  path: ALBO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+APRO3_XE:
+  path: APRO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+ARWO3_XE:
+  path: ARWO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+CASW1_XE:
+  path: CASW.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+COKW1_XE:
+  path: COKW.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+CORO3_XE:
+  path: CORO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+DLLO3_XE:
+  path: DLLO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+EGLO3_XE:
+  path: EGLO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+EKTO3_XE:
+  path: EKTO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+EUGO3_XE:
+  path: EUGO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+FOSO3_XE:
+  path: FOS.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+FRMO3_XE:
+  path: FRMO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+GOSO3_XE:
+  path: GOSO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+GRAO3_XE:
+  path: GRAO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+HARO3_XE:
+  path: HARO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+JASO3_XE:
+  path: JASO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+JFFO3_XE:
+  path: JFFO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+LOPO3_XE:
+  path: LOP.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+MCMO3_XE:
+  path: MCMO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+MEHO3_XE:
+  path: MEHO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+MNRO3_XE:
+  path: MNRO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+MODO3_XE:
+  path: MODO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+MYPO3_XE:
+  path: MYPO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+PDTO3_XE:
+  path: PDTO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+RAWW1_XE:
+  path: RAWW.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+RDLO3_XE:
+  path: RDLO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+RYGO3_XE:
+  path: RYGO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+SERO3_XE:
+  path: SERO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+SLMO3_XE:
+  path: SLMO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+UMAO3_XE:
+  path: UMAO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+VIDO3_XE:
+  path: VIDO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+WLSO3_XE:
+  path: WLSO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+WNRO3_XE:
+  path: WNRO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+WSLO3_XE:
+  path: WSLO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+WSNO3_XE:
+  path: WSNO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST
+WTLO3_XE:
+  path: WTLO.Flow-Local.Inst.~6Hours.0.BLEND-RFC-OBS-RFC-FCST

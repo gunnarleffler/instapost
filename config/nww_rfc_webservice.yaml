@@ -1,0 +1,9 @@
+MLKW1:
+  HG:
+    forecast: MLKW.Stage.Inst.~6Hours.0.RFC-FCST
+    observed: MLKW.Stage.Ave.15Minutes.0.RFC-RAW
+    blended:  MLKW.Stage.Inst.15Minutes.0.BLEND-RFC-OBS-RFC-FCST
+  QR:
+    forecast: MLKW.Flow.Inst.~6Hours.0.RFC-FCST
+    observed: MLKW.Flow.Ave.15Minutes.0.RFC-RAW
+    blended:  MLKW.Flow.Inst.15Minutes.0.BLEND-RFC-OBS-RFC-FCST

@@ -1,0 +1,142 @@
+#!/usr/local/bin/python
+#!/usr/bin/env python
+'''
+get_rfc_local v0.7.0
+11/30/2015 
+This program retireves local inflows and forecasts from the NWRFC.
+The config file 
+POC: Gunnar Leffler
+'''
+
+import sys,os,datetime,requests,re, random, argparse, json, yaml
+from xml.dom import minidom
+
+#--------------------------------------------------------------------------------
+#Configuration
+#--------------------------------------------------------------------------------
+
+dataURL = "http://www.nwrfc.noaa.gov/chpsexport/xelocal/2016/20161021/AUBW1_XE.2016102112.xml"
+rfcServer = "http://www.nwrfc.noaa.gov"
+catalogURL="http://www.nwrfc.noaa.gov/misc/downloads/downloads.php?type=effective_local_flow&sortby=date&sortasc=true&filter="
+
+#--------------------------------------------------------------------------------
+#XML to dictionary conversion
+#--------------------------------------------------------------------------------
+def parse_element(element):
+    '''Converts XML to dictionary data structure
+    '''
+    dict_data = dict()
+    if element.nodeType == element.TEXT_NODE:
+      if element.data.strip() != "":  
+        dict_data = element.data
+    if element.nodeType not in [element.TEXT_NODE, element.DOCUMENT_NODE,
+                                element.DOCUMENT_TYPE_NODE]:
+      for item in element.attributes.items():
+        dict_data["@"+item[0]] = item[1]
+    if element.nodeType not in [element.TEXT_NODE, element.DOCUMENT_TYPE_NODE]:
+      for child in element.childNodes:
+        child_name, child_dict = parse_element(child)
+        if child_name in dict_data:
+          if child_dict != {}:
+            try:
+              dict_data[child_name].append(child_dict)
+            except AttributeError:
+              dict_data[child_name] = [dict_data[child_name], child_dict]
+        else:
+          if child_dict != {}: dict_data[child_name] = child_dict
+      if dict_data.keys() == ["#text"]:
+        dict_data = dict_data["#text"]
+    return element.nodeName, dict_data
+
+def xml2dict(txt):
+  dom = minidom.parseString(txt.encode('utf-8'))
+  return parse_element(dom)[1]
+
+def xml2json(txt):
+  return json.dumps(xml2dict(txt), sort_keys=True, indent=1)
+
+#--------------------------------------------------------------------------------
+#Helper Methods
+#--------------------------------------------------------------------------------
+
+def readFile(path):
+  f = open (path,"r")
+  output = f.read()
+  f.close()
+  return output
+
+def doTemplate(s,j):
+  for key in j:
+    s = s.replace(key,j[key])
+  return s
+
+def getCatalog():
+  path = ""
+  catalog = {}
+  if args.verbose: sys.stderr.write("Getting catalog file from server...")
+  r = requests.get(catalogURL)
+  raw = json.loads(r.text)
+  for item in raw:
+    if "path" in item:
+      path = item["path"]
+    elif "fn" in item: 
+      key = item["fn"].split(".")[0]
+      catalog[key] = rfcServer+path+"/"+item["fn"]
+  if args.verbose: sys.stderr.write(" %d entries found.\n" %( len(catalog) ) )
+  return catalog
+
+def loadConfig(path):
+  if args.verbose: sys.stderr.write("loading config file...")
+  output = yaml.safe_load(open(path))   
+  if args.verbose: sys.stderr.write(" %d entries found.\n" %( len(output) ) )
+  return output
+
+def getLocalTs(loc):
+  output = {}
+  if loc.upper() in catalog:
+    raw = requests.get(catalog[loc]).text
+    if args.raw: print raw
+    try:
+      ts =xml2dict(raw)["TimeSeries"]
+    except:
+      sys.stderr.write("ERROR:\n"+raw)
+      return {}
+    timezone = float(ts.get("timeZone","0"))
+    if timezone == 0: output["timezone"] = "GMT"
+    output["timeseries"] = {}
+    output["units"] = ts["series"]["header"].get("units","KCFS")
+    missing  = ts["series"]["header"].get("missVal","-999")
+    for item in ts["series"]["event"]:
+      if item.get("@value") == missing: continue
+      timestamp = "%sT%s+0%d:00" % (item["@date"],item["@time"],timezone)
+      output ["timeseries"][timestamp] = float(item.get("@value"))
+  elif args.verbose:
+    sys.stderr.write("%s not found in catalog." % (loc))
+  return output
+   
+#--------------------------------------------------------------------------------
+# main()
+#--------------------------------------------------------------------------------
+catalog = {}
+args = {}
+config = {}
+if __name__ == "__main__":
+  p = argparse.ArgumentParser()
+  p.add_argument( 'config', help='YAML formatted Configuration file' )
+  p.add_argument( '-v', '--verbose', action='store_true', help='Work verbosely' )
+  p.add_argument( '-r', '--raw', action='store_true', help='Output raw XML from RFC' )
+  p.add_argument( '-c', '--catalog', action='store_true', help='Output catalog from RFC' )
+  args = p.parse_args()
+  catalog = getCatalog()
+  if args.catalog:
+    print json.dumps(catalog,sort_keys=True, indent = 2)
+    sys.exit()
+  config = loadConfig(args.config)
+  output = {}
+  for loc in config:
+    ts = getLocalTs(loc)
+    if ts != {}: output[config[loc]["path"]] = ts
+  if not args.raw: print yaml.safe_dump(output, default_flow_style=False)
+    
+
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2

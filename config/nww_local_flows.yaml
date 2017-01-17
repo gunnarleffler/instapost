@@ -1,0 +1,48 @@
+AFRI1_XE:
+  path: AMF.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+ALPW4_XE:
+  path: ALPY.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+ANAW1_XE:
+  path: ANAW.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+ANTI1_XE:
+  path: ANTI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+ARKI1_XE:
+  path: ARK.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+HRSI1_XE:
+  path: HRSI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+JKSW4_XE:
+  path: JKSY.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+LUCI1_XE:
+  path: LUC.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+MILI1_XE:
+  path: MILI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+ORFI1_XE:
+  path: ORFI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+PIHI1_XE:
+  path: PIHI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+PLDI1_XE:
+  path: PAL.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+PRPI1_XE:
+  path: PRPI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+PWDO3_XE:
+  path: PWDO.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+REXI1_XE:
+  path: REXI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+SHYI1_XE:
+  path: SHYI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+SIFI1_XE:
+  path: SIFI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+SNAI1_XE:
+  path: SNAI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+SPDI1_XE:
+  path: SPDI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+SWAI1_XE:
+  path: SWAI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+TEAI1_XE:
+  path: TEAI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+VALO3_XE:
+  path: VALO.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+WHBI1_XE:
+  path: WHBI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+WSRI1_XE:
+  path: WSRI.Flow-Local.Ave.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST

@@ -1,0 +1,12 @@
+{
+ "ORACLE_HOME" : "/oraclebase/product/11.1_client",
+ "PATH"        : "<DIRECTORY WHERE THIS FILE SHOULD LIVE>",
+ "dbuser"      : "<ENTER USER>",
+ "dbpassword"  : "<ENTER PASSWORD>",
+ "dbname"      : "detect",
+ "office"      : "<ENTER DB OFFICE>",
+ "timeFormat"  : "%d-%b-%Y %H%M",
+ "timeZone"    : "GMT",
+ "remarks"     : "Configuration for Alternative CWMS Posting Program",
+ "version"     : "1.0.2"
+}
