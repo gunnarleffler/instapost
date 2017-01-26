@@ -5,12 +5,12 @@ helpstr='''
  | | '_ \/ __| __/ _` | '_ \ / _ \/ __| __|
  | | | | \__ \ || (_| | |_) | (_) \__ \ |_ 
  |_|_| |_|___/\__\__,_| .__/ \___/|___/\__|
-                      |_|v1.0.2 12/07/2016
+                      |_|v1.1.0 1/25/2017
                  
 post data to CWMSv3+ databases in realtime
 '''
 
-import argparse, re, sys, os, yaml, tslite, pytz, json, cx_Oracle, datetime
+import argparse, re, sys, os, yaml, tslite, pytz, json, cx_Oracle, datetime, time
 import dateutil.parser as dateparser
 
 #Read Configuration File
@@ -51,6 +51,7 @@ class dataService:
     self.status = "OK"
     self.configuration = self.getDefaultConfiguration()
     self.dbconn = None
+    self.cur = None
 
   def connect(self):
     try:
@@ -59,10 +60,13 @@ class dataService:
           password=self.configuration["dbpassword"], dsn=dbname)
       if not self.dbconn :
         self.status = "Could not connect to %s" % dbname
+      else:
+        self.cur = self.dbconn.cursor()
     except Exception,e:
       self.status = "Could not connect to %s: %s" % (dbname, str(e))
 
   def disconnect(self):
+    if self.cur != None: cur.close()
     self.dbconn.close()
 
   def getDefaultConfiguration (self):
@@ -89,30 +93,16 @@ class dataService:
     timefmt = self.configuration["timeFormat"]
     office = self.configuration["office"]
     try:
-      crsr = self.dbconn.cursor()
-      # retrieve the time series data #
-      ts_cur = self.dbconn.cursor()
+      ts_cur = self.cur.var( cx_Oracle.CURSOR )
       if units.lower() == "default":
         units = self.getDefaultUnits(tsid)
-      crsr.execute('''
-          begin
-          cwms_ts.retrieve_ts(
-                P_AT_TSV_RC =>:ts_cur,
-                P_CWMS_TS_ID =>:tsid,
-                P_UNITS =>:units,
-                P_START_TIME =>to_date(:start_time, 'dd-mon-yyyy hh24mi'),
-                P_END_TIME =>to_date(:end_time,   'dd-mon-yyyy hh24mi'),
-                P_TIME_ZONE =>:timezone,
-                P_OFFICE_ID =>:office);
-          end;''', [ts_cur, tsid, units, start_time.strftime(timefmt), end_time.strftime(
-timefmt), timezone, office])
-      records = ts_cur.fetchall()
-      ts_cur.close()
+      self.cur.callproc( 'cwms_ts.retrieve_ts',
+                          [ ts_cur, tsid, units, start_time, end_time ] )
       output =[]
-      for record in records: #apply timezone
+      for record in ts_cur.getvalue():
         output.append(list(record))
-        output[-1][0] = record[0].replace(tzinfo=pytz.timezone(timezone))
-      crsr.close()
+        #log (str(output[-1]))
+        output[-1][0] = record[0].replace(tzinfo=pytz.timezone(timezone)) #apply timezone
     except Exception, e:
       self.status = "Could not retrieve %s: %s" % (tsid,str(e))
       log(self.status)
@@ -121,55 +111,27 @@ timefmt), timezone, office])
 
   def writeToCWMS (self,tsid,units,valueList, timezone= "GMT", buffersize=500):
     self.status = "OK"
-    crsr = self.dbconn.cursor()
+    #cur = self.dbconn.cursor()
     timefmt = self.configuration["timeFormat"]
     office = self.configuration["office"]
     if units.lower() == "default":
       units = self.getDefaultUnits(tsid)
+    times, values, qualities = [], [], []
+    for row in valueList:
+      ( stamp, val ) = row[:2]     
+      times.append( time.mktime(stamp.timetuple())*1000 )
+      values.append(val)
+      qualities.append (0)
+      log("%s\t%s\t%s\t%s" % (tsid,stamp.isoformat(),val,units), level="STOR")
     try:
-      done = False
-      i = 0
-      while done == False:
-        count = 1
-        SQLstr = """declare
-        ts     timestamp(6);
-        tstz   timestamp(6) with time zone;
-        val    binary_double;
-        qual   number;
-        l_tsv  cwms_20.tsv_array := cwms_20.tsv_array();
-        begin
-        """
-        j = i+buffersize
-        if j > len(valueList):
-          j = len (valueList)
-          done = True
-        if i == j:
-          break
-        for k in xrange (i,j):
-          line = valueList[k]
-          timestamp = line[0].strftime(timefmt).upper()
-          value = str(line[1])
-          quality = str(line[2])
-          if int(line[2]) == 17 or int(line[2]) == 5:
-            value = "null"
-          SQLstr +="    ts   := to_timestamp('"+timestamp+"','DD-MON-YYYY HH24MI');\n"
-          SQLstr +="    tstz := from_tz(ts,'"+timezone+"');\n"
-          SQLstr +="    val  := "+value+";\n"
-          SQLstr +="    qual := "+quality+";\n"
-          SQLstr +="    l_tsv.extend;\n"
-          SQLstr +="    l_tsv("+str(count)+") := cwms_20.tsv_type(tstz, val, qual);\n"
-          count += 1
-          log("%s\t%s\t%s\t%s" % (tsid,line[0].isoformat(),value,units), level="STOR")
-        SQLstr +="    DBMS_OUTPUT.ENABLE(1000000);\n"
-        SQLstr +="    cwms_20.cwms_ts.store_ts('"+tsid+"','"+units+"',l_tsv,'REPLACE ALL',null,null,'"+office+"');\n"
-        SQLstr +="    commit;\n"
-        SQLstr +="end;\n"
-        crsr.execute(SQLstr)
-        i += buffersize
+      if values != []:
+        self.cur.callproc( 'cwms_ts.store_ts', [ tsid, units, times,
+                      self.cur.arrayvar( cx_Oracle.NATIVE_FLOAT, values ), qualities,
+                      'REPLACE ALL' ] )
+      log ("Wrote %d values." % len(values))
     except Exception, e:
       self.status = "Could not store %s: %s" % (tsid,str(e))
-      log(self.status)
-    crsr.close()
+      log(self.status, level="ERROR")
 
   def writeDiff (self,tsid,units,ts, timezone= "GMT", buffersize=500):
     ''' this writes the difference between values in the database and provided timeseries '''
@@ -254,5 +216,5 @@ if args.json:
   post (infile, fmt="JSON")
 else:
   post(infile)
-
+ds.disconnect()
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2

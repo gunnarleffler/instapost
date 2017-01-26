@@ -1,28 +1,39 @@
 #!/usr/local/bin/python
 #!/usr/bin/env python
 helpstr = '''
-get_rfc_local v1.1.0
-1/4/2017
+get_rfc_local v1.2.0
+1/18/2017
 This program retireves observed and forecast data from the NWRFC.
 POC: Gunnar Leffler
 
 FORMATTING
 ==========
 
-configuration file 
-------------------
-HANDBOOK5 ID:
-  PE code:
+configuration file example
+--------------------------
+
+MLKW:
+  HG:
     forecast: MLKW.Stage.Inst.~6Hours.0.RFC-FCST
     observed: MLKW.Stage.Ave.15Minutes.0.RFC-RAW
     blended:  MLKW.Stage.Inst.15Minutes.0.BLEND-RFC-OBS-RFC-FCST
-  PE code:
+  QR:
     forecast: MLKW.Flow.Inst.~6Hours.0.RFC-FCST
     observed: MLKW.Flow.Ave.15Minutes.0.RFC-RAW
     blended:  MLKW.Flow.Inst.15Minutes.0.BLEND-RFC-OBS-RFC-FCST
-
-NOTE: sometimes the RFC files data on other PE codes, you can specify which
-  Alternate PE codes with the "use_pe: " option.
+KLLW1:
+  HG:
+    observed: KLLW.Stage.Inst.15Minutes.0.RFC-RAW
+  QR:
+    observed: KLLW.Flow.Inst.15Minutes.0.RFC-RAW
+    #sometimes the RFC files data on other PE codes, you can specify which
+    #Alternate PE codes with the "use_pe: " option as follows.
+    use_pe: HG
+LYDM8:
+  HP:
+    observed: LIB.Elev-Forebay.Inst.1Hour.0.RFC-RAW
+    #Option below only posts data from the top of the hour
+    timefilter: 00:00
 
 Output
 ------
@@ -135,7 +146,7 @@ def getWebService (loc,pe):
   WScache [1] = output
   return output
 
-def  parseWSdata (ws, pe, wsPE, conf, loc):
+def  parseWSdata (ws, pe, wsPE, conf, loc, timefilter):
 
   def getTS (t,myPE):
     out = {"timeseries": {},
@@ -147,7 +158,8 @@ def  parseWSdata (ws, pe, wsPE, conf, loc):
       for item in t:
         if (item.get("@petype","") + item.get("@durCode","")+ item.get("@tsCode",""))[:len(myPE)] == myPE:
           if longpe in item:
-            out["timeseries"][item["dataDateTime"]] = float(item[longpe]["#text"])
+            if timefilter in item["dataDateTime"]:
+              out["timeseries"][item["dataDateTime"]] = float(item[longpe]["#text"])
             if "@units" in item[longpe]: out["units"] = units_xref.get(item[longpe]["@units"],"unknown:"+pe)
     except:
       pass
@@ -176,7 +188,7 @@ def makeconfig(critpath):
   for line in crit:
     tokens = line.split(";")[0].split("=")
     loc, pe, tse, duration  = tokens[0][2:].split(".")
-    if pe in PE_xref and len(loc) > 4:
+    if pe in PE_xref and len(loc) > 4 and "Q2" not in loc:
       if not loc in config: config[loc] = {}
       if not pe in config[loc]: config[loc][pe] = {}
       if tse[0] == "F":
@@ -214,8 +226,9 @@ if __name__ == "__main__":
   output = {}
   for loc in config:
     for pe in config[loc]:
+      timefilter = config[loc][pe].get("timefilter","")
       wsPE = config[loc][pe].get("use_pe",pe) #sometimes the RFC misfiles data under other PEs
-      output = parseWSdata(getWebService(loc,wsPE), pe, wsPE, config[loc][pe], loc )
+      output = parseWSdata(getWebService(loc,wsPE), pe, wsPE, config[loc][pe], loc, timefilter )
       if not args.rawXML and not args.rawJSON and output != {}: 
         print yaml.safe_dump(output, default_flow_style=False)
         print "---"
