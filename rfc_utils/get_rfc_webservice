@@ -1,8 +1,8 @@
 #!/usr/local/bin/python
 #!/usr/bin/env python
 helpstr = '''
-get_rfc_local v1.2.0
-1/18/2017
+get_rfc_local v1.4.0
+1/26/2017
 This program retireves observed and forecast data from the NWRFC.
 POC: Gunnar Leffler
 
@@ -19,7 +19,10 @@ MLKW:
     blended:  MLKW.Stage.Inst.15Minutes.0.BLEND-RFC-OBS-RFC-FCST
   QR:
     forecast: MLKW.Flow.Inst.~6Hours.0.RFC-FCST
-    observed: MLKW.Flow.Ave.15Minutes.0.RFC-RAW
+    #Multiple paths can be mapped
+    observed: 
+      - MLKW.Flow.Ave.15Minutes.0.RFC-RAW
+      - MLKW.Flow.Ave.15Minutes.0.RFC-REV
     blended:  MLKW.Flow.Inst.15Minutes.0.BLEND-RFC-OBS-RFC-FCST
 KLLW1:
   HG:
@@ -50,7 +53,7 @@ from xml.dom import minidom
 #Configuration
 #--------------------------------------------------------------------------------
 
-dataURL = "http://www.nwrfc.noaa.gov/xml/xml.cgi?id=LOC&pe=PE&dtype=b&numdays=5"
+dataURL = "http://www.nwrfc.noaa.gov/xml/xml.cgi?id=LOC&pe=PE&dtype=b&numdays=NUMDAYS"
 rfcServer = "http://www.nwrfc.noaa.gov"
 PE_xref = {"QI":"inflow",
            "QR":"discharge",
@@ -122,11 +125,11 @@ def loadConfig(path):
   if args.verbose: sys.stderr.write(" %d entries found.\n" %( len(output) ) )
   return output
 
-def getWebService (loc,pe):
+def getWebService (loc,pe,lookback):
   output = {}
   pe = pe[:2]
   if args.verbose: sys.stderr.write("Getting %s %s \n" % (loc,pe))
-  URL = dataURL.replace("LOC",loc).replace("PE",pe)
+  URL = dataURL.replace("LOC",loc).replace("PE",pe).replace("NUMDAYS",lookback)
   if WScache [0] == URL:
     if args.verbose: sys.stderr.write("Using Cached version \n")
     return WScache[1]
@@ -170,16 +173,22 @@ def  parseWSdata (ws, pe, wsPE, conf, loc, timefilter):
   output = {}
   if "forecast" in conf:
     if "forecastData" in ws:
-      if "forecastValue" in ws["forecastData"]: output[conf["forecast"]] = getTS(ws["forecastData"]["forecastValue"],wsPE[:2])
+      if not isinstance(conf["forecast"], list): conf["forecast"] = [conf["forecast"]]
+      for path in conf["forecast"]:
+        if "forecastValue" in ws["forecastData"]: output[path] = getTS(ws["forecastData"]["forecastValue"],wsPE[:2])
     elif args.verbose: sys.stderr.write("No Forecast Found %s %s \n" % (loc, pe))
   if "observed" in conf and "observedData" in ws:
-    if "observedValue" in ws["observedData"]: output[conf["observed"]] = getTS(ws["observedData"]["observedValue"],wsPE)
+    if not isinstance(conf["observed"], list): conf["observed"] = [conf["observed"]]
+    for path in conf["observed"]:
+      if "observedValue" in ws["observedData"]: output[path] = getTS(ws["observedData"]["observedValue"],wsPE)
   if "blended" in conf :
-    if "observedData" in ws:
-      if "observedValue" in ws["observedData"]: output[conf["blended"]] = getTS(ws["observedData"]["observedValue"],wsPE)
-    if "forecast" in conf and "forecastData" in ws:
-      if "forecastValue" in ws["forecastData"]: output[conf["blended"]]["timeseries"].update( getTS(ws["forecastData"]["forecastValue"],
-      wsPE[:2])["timeseries"])
+    if not isinstance(conf["blended"], list): conf["blended"] = [conf["blended"]]
+    for path in conf["blended"]:
+      if "observedData" in ws:
+        if "observedValue" in ws["observedData"]: output[path]= getTS(ws["observedData"]["observedValue"],wsPE)
+      if "forecast" in conf and "forecastData" in ws:
+        if "forecastValue" in ws["forecastData"]: output[path]["timeseries"].update( getTS(ws["forecastData"]["forecastValue"],
+        wsPE[:2])["timeseries"])
   return output
 
 def makeconfig(critpath):
@@ -214,6 +223,7 @@ config = {}
 if __name__ == "__main__":
   p = argparse.ArgumentParser(description=helpstr, formatter_class=argparse.RawDescriptionHelpFormatter)
   p.add_argument( 'config', help='YAML formatted Configuration file' )
+  p.add_argument( '-l', '--lookback', help='Lookback a number of days' )
   p.add_argument( '-v', '--verbose', action='store_true', help='Work verbosely' )
   p.add_argument( '-rx', '--rawXML', action='store_true', help='Output raw XML from RFC' )
   p.add_argument( '-rj', '--rawJSON', action='store_true', help='Output JSON from RFC' )
@@ -223,12 +233,14 @@ if __name__ == "__main__":
     makeconfig (args.config)
     sys.exit(0)
   config = loadConfig(args.config)
+  if args.lookback: lookback = args.lookback
+  else:             lookback = '5'
   output = {}
   for loc in config:
     for pe in config[loc]:
       timefilter = config[loc][pe].get("timefilter","")
       wsPE = config[loc][pe].get("use_pe",pe) #sometimes the RFC misfiles data under other PEs
-      output = parseWSdata(getWebService(loc,wsPE), pe, wsPE, config[loc][pe], loc, timefilter )
+      output = parseWSdata(getWebService(loc,wsPE,lookback), pe, wsPE, config[loc][pe], loc, timefilter )
       if not args.rawXML and not args.rawJSON and output != {}: 
         print yaml.safe_dump(output, default_flow_style=False)
         print "---"

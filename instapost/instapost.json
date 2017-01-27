@@ -8,5 +8,5 @@
  "timeFormat"  : "%d-%b-%Y %H%M",
  "timeZone"    : "GMT",
  "remarks"     : "Configuration for Alternative CWMS Posting Program",
- "version"     : "1.1.0"
+ "version"     : "1.1.1"
 }
