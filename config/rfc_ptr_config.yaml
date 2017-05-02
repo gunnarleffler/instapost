@@ -1,0 +1,434 @@
+75S:
+  PP:
+    blended: 75SW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: 75SW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: 75SW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: 75SW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: 75SW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+ACTW1:
+  PP:
+    observed: ACTW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: ACTW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: ACTW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+ARLW1:
+  PP:
+    blended: ARLW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: ARLW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: ARLW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: ARLW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: ARLW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+AWO:
+  PP:
+    blended: AWOW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: AWOW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: AWOW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    blended: AWOW.Temp-Air.Min.~1Day.1Day.BLEND-RFC-OBS-RFC-FCST
+    forecast: AWOW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-FCST-RAW
+    observed: AWOW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    blended: AWOW.Temp-Air.Max.~1Day.1Day.BLEND-RFC-OBS-RFC-FCST
+    forecast: AWOW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-FCST-RAW
+    observed: AWOW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+BLI:
+  PP:
+    blended: BLIW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: BLIW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: BLIW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    blended: BLIW.Temp-Air.Min.~1Day.1Day.BLEND-RFC-OBS-RFC-FCST
+    forecast: BLIW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-FCST-RAW
+    observed: BLIW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    blended: BLIW.Temp-Air.Max.~1Day.1Day.BLEND-RFC-OBS-RFC-FCST
+    forecast: BLIW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-FCST-RAW
+    observed: BLIW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+BLLW1:
+  PP:
+    blended: BLLW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: BLLW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: BLLW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: BLLW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: BLLW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+BLNW1:
+  PP:
+    observed: BLNW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: BLNW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: BLNW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+BRLW1:
+  PP:
+    blended: BRLW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: BRLW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: BRLW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+CLBW1:
+  PP:
+    blended: CLBW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: CLBW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: CLBW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: CLBW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: CLBW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+CNCW1:
+  PP:
+    blended: CNCW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: CNCW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: CNCW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: CNCW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: CNCW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+DARW1:
+  PP:
+    blended: DARW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: DARW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: DARW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: DARW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: DARW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+DIAW1:
+  PP:
+    blended: DIAW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: DIAW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: DIAW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    forecast: DIAW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-FCST-RAW
+  TX:
+    forecast: DIAW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-FCST-RAW
+DIDW1:
+  PP:
+    blended: DIDW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: DIDW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: DIDW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: DIDW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: DIDW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+ELSW1:
+  PP:
+    blended: ELSW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: ELSW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: ELSW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: ELSW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: ELSW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+GLAW1:
+  PP:
+    blended: GLAW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: GLAW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: GLAW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: GLAW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: GLAW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+HLDW1:
+  PP:
+    blended: HLDW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: HLDW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: HLDW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: HLDW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: HLDW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+HRPW1:
+  PP:
+    blended: HRPW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: HRPW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: HRPW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: HRPW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: HRPW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+LUSW1:
+  PP:
+    blended: LUSW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: LUSW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: LUSW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+LYLW1:
+  PP:
+    blended: LYLW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: LYLW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: LYLW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: LYLW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: LYLW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+MARW1:
+  PP:
+    blended: MARW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: MARW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: MARW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+MBLW1:
+  PP:
+    blended: MBLW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: MBLW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: MBLW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+MIRW1:
+  PP:
+    blended: MIRW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: MIRW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: MIRW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: MIRW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: MIRW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+MTVW1:
+  PP:
+    blended: MTVW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: MTVW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: MTVW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: MTVW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: MTVW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+MZAW1:
+  PP:
+    blended: MZAW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: MZAW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: MZAW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: MZAW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: MZAW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+NOKW1:
+  PP:
+    blended: NOKW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: NOKW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: NOKW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+NUW:
+  PP:
+    blended: NUWW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: NUWW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: NUWW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    blended: NUWW.Temp-Air.Min.~1Day.1Day.BLEND-RFC-OBS-RFC-FCST
+    forecast: NUWW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-FCST-RAW
+    observed: NUWW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    blended: NUWW.Temp-Air.Max.~1Day.1Day.BLEND-RFC-OBS-RFC-FCST
+    forecast: NUWW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-FCST-RAW
+    observed: NUWW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+NWMW1:
+  PP:
+    blended: NWMW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: NWMW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: NWMW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: NWMW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: NWMW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+PCRW1:
+  PP:
+    blended: PCRW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: PCRW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: PCRW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: PCRW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: PCRW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+PPRW1:
+  PP:
+    blended: PPRW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: PPRW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: PPRW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: PPRW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: PPRW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+PTTW1:
+  PP:
+    blended: PTTW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: PTTW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: PTTW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: PTTW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: PTTW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+RAIW1:
+  PP:
+    blended: RAIW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: RAIW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: RAIW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: RAIW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: RAIW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+RODW1:
+  PP:
+    blended: RODW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: RODW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: RODW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: RODW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: RODW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+ROSW1:
+  PP:
+    forecast: ROSW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+  TN:
+    observed: ROSW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: ROSW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+SEWW1:
+  PP:
+    blended: SEWW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: SEWW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: SEWW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: SEWW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: SEWW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+SHDW1:
+  PP:
+    blended: SHDW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: SHDW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: SHDW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+SHKW1:
+  PP:
+    blended: SHKW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: SHKW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: SHKW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+SLVW1:
+  PP:
+    blended: SLVW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: SLVW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: SLVW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: SLVW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: SLVW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+STEW1:
+  PP:
+    blended: STEW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: STEW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: STEW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: STEW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: STEW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+THBW1:
+  PP:
+    blended: THBW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: THBW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: THBW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: THBW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: THBW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+UBDW1:
+  PP:
+    blended: UBDW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: UBDW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: UBDW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: UBDW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: UBDW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+UBKW1:
+  PP:
+    blended: UBKW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: UBKW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: UBKW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    blended: UBKW.Temp-Air.Min.~1Day.1Day.BLEND-RFC-OBS-RFC-FCST
+    forecast: UBKW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-FCST-RAW
+    observed: UBKW.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    blended: UBKW.Temp-Air.Max.~1Day.1Day.BLEND-RFC-OBS-RFC-FCST
+    forecast: UBKW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-FCST-RAW
+    observed: UBKW.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+VERW1:
+  PP:
+    blended: VERW.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: VERW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: VERW.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+WWK:
+  PP:
+    blended: WWKB.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: WWKB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: WWKB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: WWKB.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: WWKB.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+WZA:
+  PP:
+    blended: WZAB.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: WZAB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: WZAB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: WZAB.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: WZAB.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+YCK:
+  PP:
+    blended: YCKB.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: YCKB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: YCKB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: YCKB.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: YCKB.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+YSG:
+  PP:
+    blended: YSGB.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: YSGB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: YSGB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: YSGB.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: YSGB.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+YSM:
+  PP:
+    blended: YSMB.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: YSMB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: YSMB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: YSMB.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: YSMB.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+YXX:
+  PP:
+    blended: YXXB.Precip-Inc.Total.~6Hours.6Hours.BLEND-RFC-OBS-RFC-FCST
+    forecast: YXXB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW
+    observed: YXXB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW
+  TN:
+    observed: YXXB.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+  TX:
+    observed: YXXB.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW
+
+---
+6JMANQ2.PP.RZZ.0=MANB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW;Units=in
+6JSARQ2.PP.RZZ.0=SARB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW;Units=in
+6JBLKQ2.PP.RZZ.0=BLKB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW;Units=in
+6JALPQ2.PP.RZZ.0=ALPB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-OBS-RAW;Units=in
+6JMANQ2.PP.FZZ.0=MANB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW;Units=in
+6JBLKQ2.PP.FZZ.0=BLKB.Precip-Inc.Total.~6Hours.6Hours.RFC-SKAGIT-FCST-RAW;Units=in
+6JMANQ2.TX.RZZ.0=MANB.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW;Units=F
+6JSARQ2.TX.RZZ.0=SARB.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW;Units=F
+6JBLKQ2.TX.RZZ.0=BLKB.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW;Units=F
+6JALPQ2.TX.RZZ.0=ALPB.Temp-Air.Max.~1Day.1Day.RFC-SKAGIT-OBS-RAW;Units=F
+6JMANQ2.TN.RZZ.0=MANB.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW;Units=F
+6JSARQ2.TN.RZZ.0=SARB.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW;Units=F
+6JBLKQ2.TN.RZZ.0=BLKB.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW;Units=F
+6JALPQ2.TN.RZZ.0=ALPB.Temp-Air.Min.~1Day.1Day.RFC-SKAGIT-OBS-RAW;Units=F
+6JMVEW1.QR.RZZ.0=CONW-MVEW.Flow-Loc.Ave.6Hours.6Hours.RFC-FCST;Units=kcfs
+6JCONW1.QR.RZZ.0=SRMW-CONW.Flow-Loc.Ave.6Hours.6Hours.RFC-FCST;Units=kcfs
+6JSRMW1.QR.RZZ.0=GORW-SRMW.Flow-Loc.Ave.6Hours.6Hours.RFC-FCST;Units=kcfs
+6JGORW1.QR.RZZ.0=ROS-GORW.Flow-Loc.Ave.6Hours.6Hours.RFC-FCST;Units=kcfs
+6JSHDW1.QR.RZZ.0=UBK-SHA.Flow-Loc.Ave.6Hours.6Hours.RFC-FCST;Units=kcfs
+6JSNEW.HM.FZZ.0=SNEW.Elev-Tide.Inst.15Minutes.0.CENWS-NOAA-FCST;Units=ft
+6JSWNW.HM.FZZ.0=SWNW.Elev-Tide.Inst.15Minutes.0.CENWS-NOAA-FCST;Units=ft
+

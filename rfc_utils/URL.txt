@@ -1,0 +1,13 @@
+[
+  "qpe6_201705011356.xml",
+  "qpf6_201705011326.xml",
+  "qpf24_201705011326.xml",
+  "qte24min_201705011326.xml",
+  "qte24max_201705011326.xml",
+  "qtf24min_201705011322.xml",
+  "qtf24max_201705011322.xml"
+]
+
+view-source:https://www.nwrfc.noaa.gov/weather/xml/qte24min_201705011326.xml
+view-source:https://www.nwrfc.noaa.gov/weather/xml/qpf24_201705011326.xml
+https://www.nwrfc.noaa.gov/weather/xml/qpe6_201705011356.xml

@@ -4,7 +4,7 @@
  | | '_ \/ __| __/ _` | '_ \ / _ \/ __| __|
  | | | | \__ \ || (_| | |_) | (_) \__ \ |_
  |_|_| |_|___/\__\__,_| .__/ \___/|___/\__|
-                      |_|v1.1.1 1/26/2017
+                       |_|v1.2.0 4/17/2017
 
 post data to CWMSv3+ databases in realtime
 
@@ -35,9 +35,13 @@ Directory which contains the instapost script and dependencies.
 
 ### /rfc_utils 
 
+Some utilities to pull data from the NWRFC
+
 `get_rfc_local` - gets local flow data from NWRFC
 
-`get_rfc_webservice` - gets forecast and observed data from nwrfc XML webservice
+`get_rfc_webservice` - gets forecast and observed data from NWRFC XML webservice
+
+`get_rfc_ptr` - gets forecast and observed precip and temperature from NWRFC XML webservice 
 
 `get_ahps` - gets AHPS observed data and official forecasts
 
