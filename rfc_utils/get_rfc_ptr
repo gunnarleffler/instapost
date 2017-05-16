@@ -1,8 +1,8 @@
 #!/usr/local/bin/python
 #!/usr/bin/env python
 helpstr = '''
-get_rfc_ptr v1.0.0
-5/1/2017
+get_rfc_ptr v1.0.2
+5/8/2017
 This program retireves observed and forecast temperature and precip from the
 NWRFC.
 
@@ -139,7 +139,13 @@ def loadConfig(path):
 
 def getWebService(catalog):
   output = {}
+  latest = {}
   for fname in catalog:
+    product = fname.split("_")[0]
+    if not product in latest: latest[product] = fname
+    if fname > latest[product]: latest[product] = fname
+  for product in latest:
+    fname = latest[product]
     if args.verbose:
       sys.stderr.write("Getting %s \n" % (fname))
     URL = dataURL + fname
@@ -149,7 +155,6 @@ def getWebService(catalog):
       raw = ""
       sys.stderr.write("could not retrieve %s " % (fname))
     try:
-      #collapse and make elements easier to access
       t1 = xml2dict(raw)
       t1 = t1[t1.keys()[0]]
       t1 = t1[t1.keys()[0]]
@@ -174,9 +179,7 @@ def parseWSdata(pe, wsPE, conf, loc, timefilter):
       item = WScache[prod].get(loc, None)
       if not item:
         return out
-      #dh = item["@dh"]
-      #According to alex at the RFC these DH should be 12Z
-      dh = "DH12"
+      dh = item["@dh"]
       dc = item["@dc"]
       dt = datetime.datetime(
           int(dc[2:6]), int(dc[6:8]), int(dc[8:10]), int(dh[2:]))
@@ -278,13 +281,15 @@ def getCatalog():
     sys.stderr.write("Getting catalog file from server...\n")
   today = datetime.datetime.now().strftime('%Y%m%d')
   cat_url = 'https://www.nwrfc.noaa.gov/misc/downloads/downloads.php'
-  payload = {'filter': today, 'sortasc': 'true', 'sortby': 'date'}
+  payload = {'filter': '', 'sortasc': 'true', 'sortby': 'date'}
   for typ in ['precipitation', 'temperature']:
     for kind in ['observed', 'forecast']:
       payload['type'] = dtype = '%s_%s_points' % (kind, typ)
+      r = requests.get(cat_url, params=payload)
       if args.verbose:
         sys.stderr.write(dtype + "\n")
-      data = json.loads(requests.get(cat_url, params=payload).text)
+        sys.stderr.write(r.url + "\n")
+      data = json.loads(r.text)
       for row in data:
         if 'fn' in row:
           catalog.append(row['fn'])

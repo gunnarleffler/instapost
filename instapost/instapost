@@ -5,7 +5,7 @@ helpstr = '''
  | | '_ \/ __| __/ _` | '_ \ / _ \/ __| __|
  | | | | \__ \ || (_| | |_) | (_) \__ \ |_ 
  |_|_| |_|___/\__\__,_| .__/ \___/|___/\__|
-                      |_|v1.2.0 4/17/2017
+                      |_|v1.2.1 5/16/2017
                  
 post data to CWMSv3+ databases in realtime
 '''
@@ -180,7 +180,7 @@ def process(raw, fmt):
   if fmt == "YAML":
     raw = yaml.safe_load(raw)
   else:
-    raw = json.load(raw)
+    raw = json.loads(raw)
   if raw == None:
     return
   for tsid in raw:
