@@ -1,0 +1,281 @@
+#!/usr/local/bin/python
+#!/usr/bin/env python
+helpstr = '''
+get_bc_asws v1.0.0b
+5/3/2017
+This program retireves observed Automated Snow Weather Station (ASWS) Data
+from BC Environemnt.
+
+URL: http://bcrfc.env.gov.bc.ca/data/asp/
+
+POC: Gunnar Leffler
+     Jeff Tilton
+
+FORMATTING
+==========
+
+
+Output
+------
+Output of this program is timeseries data in "instapost" YAML format
+
+PARAMETERS
+==========
+'''
+
+import sys, os, datetime, requests, re, random, argparse, json, yaml
+from xml.dom import minidom
+
+#--------------------------------------------------------------------------------
+#Configuration
+#--------------------------------------------------------------------------------
+
+dataURL = "http://bcrfc.env.gov.bc.ca/data/asp/realtime/data/SW.csv"
+
+units_xref = {"TX": "C", 
+"TN": "C", 
+"TA": "C",
+"PC": "mm",
+"SD": "mm",
+"SW": "mm"
+}
+
+WScache = {}
+#--------------------------------------------------------------------------------
+#Helper Methods
+#--------------------------------------------------------------------------------
+
+def getWithRequests():
+  payload = {'key1': 'value1', 'key2': 'value2'}
+  r = requests.post("http://httpbin.org/post", data=payload)
+  print(r.text)
+
+
+def parseDate(s):
+  try: return dateparser.parse(s, fuzzy=True)
+  except: return None
+
+def parseOutageCsv(path):
+  output = {}
+  totals = {}
+  inf = csv.DictReader(open(path))
+  for row in inf:
+    dt = parseDate(row.get("PST/PDT",None))
+    if dt == None: continue
+    for key in row:
+      if ".G" in key:
+        if not key in output: output[key] = tslite.timeseries()
+        try: output[key].insert(dt,float(row[key]))
+        except: print row["PST/PDT"]+key+str(row[key])+str(row)
+  #store in database
+  for key in output:
+    if args.verbose: print "Storing %s to database" % key
+    output[key].saveSQLITE3 (conn,key.replace(".","_")+"_availability")
+
+
+def loadConfig(path):
+  if args.verbose:
+    sys.stderr.write("loading config file...")
+  output = yaml.safe_load(open(path))
+  if args.verbose:
+    sys.stderr.write(" %d entries found.\n" % (len(output)))
+  return output
+
+
+def getWebService(catalog):
+  output = {}
+  for fname in catalog:
+    if args.verbose:
+      sys.stderr.write("Getting %s \n" % (fname))
+    URL = dataURL + fname
+    try:
+      raw = requests.get(URL).text
+    except:
+      raw = ""
+      sys.stderr.write("could not retrieve %s " % (fname))
+    try:
+      #collapse and make elements easier to access
+      t1 = xml2dict(raw)
+      t1 = t1[t1.keys()[0]]
+      t1 = t1[t1.keys()[0]]
+      product = fname.split("_")[0]
+      output[product] = {}
+      for t in t1:
+        output[product][t["@lid"]] = t
+    except:
+      sys.stderr.write("Could not parse %s" % (fname))
+  return output
+
+
+def parseWSdata(pe, wsPE, conf, loc, timefilter):
+
+  def getTS(prod, loc):
+    out = {
+        "timeseries": {},
+        "units": units_xref.get(pe[:2], "default"),
+        "timezone": "GMT"
+    }
+    try:
+      item = WScache[prod].get(loc, None)
+      if not item:
+        return out
+      #dh = item["@dh"]
+      #According to alex at the RFC these DH should be 12Z
+      dh = "DH12"
+      dc = item["@dc"]
+      dt = datetime.datetime(
+          int(dc[2:6]), int(dc[6:8]), int(dc[8:10]), int(dh[2:]))
+      interval = datetime.timedelta(hours=6)
+      indexer = "@per"
+      if "day0" in item:
+        interval = datetime.timedelta(hours=24)
+        indexer = "@day"
+      i = 0
+      while i != -1:
+        idx = indexer + str(i)
+        if not idx in item:
+          break
+        try:
+          out["timeseries"][dt.isoformat()] = float(item[idx])
+        except:
+          pass
+        i += 1
+        dt += interval
+      if pe[:2] == "PC" or (prod == "qpe6" and pe == "PP"):
+        dt -= interval
+        out["timeseries"] = {dt.isoformat(): float(item.get("Total", 0))}
+    except:
+      sys.stderr.write("No Data Found for %s %s" % (loc, pe))
+    return out
+
+  output = {}
+  if "forecast" in conf:
+    if not isinstance(conf["forecast"], list):
+      conf["forecast"] = [conf["forecast"]]
+    for path in conf["forecast"]:
+      prod = prod_xref["forecast"].get(pe, None)
+      if prod:
+        output[path] = getTS(prod, loc)
+      else:
+        sys.stderr.write("No Forecast Found %s %s \n" % (loc, pe))
+  if "observed" in conf:
+    if not isinstance(conf["observed"], list):
+      conf["observed"] = [conf["observed"]]
+    for path in conf["observed"]:
+      prod = prod_xref["observed"].get(pe, None)
+      if prod:
+        output[path] = getTS(prod, loc)
+      else:
+        sys.stderr.write("No Observed Data Found %s %s \n" % (loc, pe))
+  if "blended" in conf:
+    if not isinstance(conf["blended"], list):
+      conf["blended"] = [conf["blended"]]
+    for path in conf["blended"]:
+      prod = prod_xref["observed"].get(pe, None)
+      if prod:
+        output[path] = getTS(prod, loc)
+      else:
+        sys.stderr.write("No Observed Data Found %s %s \n" % (loc, pe))
+      if "forecast" in conf:
+        prod = prod_xref["forecast"].get(pe, None)
+        if prod:
+          output[path]["timeseries"].update(getTS(prod, loc)["timeseries"])
+  return output
+
+
+def makeconfig(critpath):
+  crit = open(critpath, "r").readlines()
+  leftovers = []
+  for line in crit:
+    tokens = line.split(";")[0].split("=")
+    loc, pe, tse, duration = tokens[0][2:].split(".")
+    if pe in units_xref:
+      if pe[0] == "T" and ".MIN." in tokens[1].upper():
+        pe = "TN"
+      elif pe[0] == "T" and ".MAX." in tokens[1].upper():
+        pe = "TX"
+      if not loc in config:
+        config[loc] = {}
+      if not pe in config[loc]:
+        config[loc][pe] = {}
+      config[loc][pe]["observed"] = tokens[1].replace(".1Day.1",".~1Day.1").replace("RFC","BCENVIRO")
+    else:
+      leftovers.append(line)
+  print yaml.safe_dump(config, default_flow_style=False)
+  print "---"
+  print "".join(leftovers)
+
+
+def getCatalog():
+  path = ""
+  catalog = []
+  if args.verbose:
+    sys.stderr.write("Getting catalog file from server...\n")
+  today = datetime.datetime.now().strftime('%Y%m%d')
+  cat_url = 'https://www.nwrfc.noaa.gov/misc/downloads/downloads.php'
+  payload = {'filter': today, 'sortasc': 'true', 'sortby': 'date'}
+  for typ in ['precipitation', 'temperature']:
+    for kind in ['observed', 'forecast']:
+      payload['type'] = dtype = '%s_%s_points' % (kind, typ)
+      if args.verbose:
+        sys.stderr.write(dtype + "\n")
+      data = json.loads(requests.get(cat_url, params=payload).text)
+      for row in data:
+        if 'fn' in row:
+          catalog.append(row['fn'])
+
+  return catalog
+
+
+#--------------------------------------------------------------------------------
+# main()
+#--------------------------------------------------------------------------------
+catalog = {}
+args = {}
+config = {}
+if __name__ == "__main__":
+  p = argparse.ArgumentParser(
+      description=helpstr, formatter_class=argparse.RawDescriptionHelpFormatter)
+  p.add_argument('config', help='YAML formatted Configuration file')
+  p.add_argument('-l', '--lookback', help='Lookback a number of days')
+  p.add_argument('-v', '--verbose', action='store_true', help='Work verbosely')
+  p.add_argument(
+      '-rx', '--rawXML', action='store_true', help='Output raw XML from RFC')
+  p.add_argument(
+      '-rj', '--rawJSON', action='store_true', help='Output JSON from RFC')
+  p.add_argument(
+      '-m',
+      '--makeconfig',
+      action='store_true',
+      help='Makes a config file from the specified crit file')
+  p.add_argument(
+      '-c', '--catalog', action='store_true', help='Output catalog from RFC')
+  args = p.parse_args()
+
+  if args.makeconfig:
+    makeconfig(args.config)
+    sys.exit(0)
+
+  catalog = getCatalog()
+  if args.catalog:
+    print json.dumps(catalog, sort_keys=True, indent=2)
+    sys.exit()
+
+  WScache = getWebService(catalog)
+  config = loadConfig(args.config)
+  if args.lookback:
+    lookback = args.lookback
+  else:
+    lookback = '5'
+  output = {}
+  for loc in config:
+    for pe in config[loc]:
+      timefilter = config[loc][pe].get("timefilter", "")
+      wsPE = config[loc][pe].get(
+          "use_pe", pe)  #sometimes the RFC misfiles data under other PEs
+      output = parseWSdata(pe, wsPE, config[loc][pe], loc, timefilter)
+      if not args.rawXML and not args.rawJSON and output != {}:
+        print yaml.safe_dump(output, default_flow_style=False)
+        print "---"
+
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2

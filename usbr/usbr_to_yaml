@@ -1,0 +1,116 @@
+#!/usr/local/bin/python
+import argparse, requests, shlex, sys
+from datetime import datetime, timedelta
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings( InsecureRequestWarning )
+
+###############################################################################
+
+def process_usbr( mode, buffer ):
+  format = {    'daily': '%m/%d/%Y', 'realtime': '%m/%d/%Y %H:%M' }
+  nodataset = {   'MISSING': 0, 'NO RECORD': 0, '': 0 }
+  flag = 0
+  output = []
+  errline = ''
+  for s in buffer.split( '\n' ):
+    s = s.strip()
+    if 'END DATA' in s:
+      flag = 0
+    if len(s) > 1 and flag > 1:         # if line not blank or header / footer
+      try:
+        tokens = s.split( ',' )
+        tokens[1] = tokens[1].strip()
+
+        # USBR's new webservice appends 'Edited' to QCd data 
+
+        tokens[1].replace( 'Edited', '' )
+        if tokens[1] not in nodataset:
+          output.append( [ datetime.strptime( tokens[0], format[mode] ),
+                           tokens[1] ] )
+        elif args.debug == True:
+          sys.stderr.write( '%s\t%s\n' % ( errline, s ) )
+      except:
+        pass
+    if 'BEGIN DATA' in s:
+      flag = 1
+    if 'DATE' in s or 'DATE       TIME' in s and flag == 1:
+      errline = s
+      flag += 1
+  return output
+
+###############################################################################
+# Removes cruft from scraped input, leaving only the floating-point value
+
+def strip_float( input ):
+  output = ''
+  if input[0] == '-': output = '-'
+  for c in input:
+    if c.isdigit() or c == '.': output += c
+  return output
+
+###############################################################################
+###############################################################################
+
+service = {        'daily': 'webarccsv.pl',
+                'realtime':   'instant.pl',
+            'realtime_alt': 'webdaycsv.pl' }
+
+parser = argparse.ArgumentParser()
+parser.add_argument( 'station_file', help='file containing stations to gather' )
+group = parser.add_mutually_exclusive_group()
+group.add_argument( '-l', '--lookback', type=int,
+                    help='Look back a number of days from end' )
+group.add_argument( '-s', '--start',
+                    help='Start data gathering at YYYY-mm-dd' )
+parser.add_argument( '-e', '--end',
+                     help='End data gathering at YYYY-mm-dd, default: today' )
+parser.add_argument( '-d', '--debug', help='Produce debugging output',
+                     action='store_true' )
+
+args = parser.parse_args()
+
+end = datetime.now()
+if args.end:
+  end = datetime.strptime( args.end, '%Y-%m-%d' )
+
+if   args.start:         start = datetime.strptime( args.start, '%Y-%m-%d' )
+elif args.lookback >= 0: start = end - timedelta( days=args.lookback )
+else:                    start = end - timedelta( days=7 )
+
+mode = 'realtime'                            # Default mode is realtime
+
+for line in open( args.station_file ):
+  row = shlex.split( line, comments=True )
+  if len( row ) == 0: continue               # Ignore blank lines
+
+  if row[0] == 'mode':                       # Set data gather mode
+    mode = row[1]
+    if mode not in service:
+      raise ValueError( "Undefined mode: '%s'.\nMust be one of %s" %
+                        ( mode, str( service.keys() ) ) )
+    continue
+
+  # If we get to here, expect a station configuration
+  # Don't use strftime() to emit dates in case they are before 1900.
+
+  station, param, ts_id, timezone, units = row[:5]
+  url = ( ( 'https://www.usbr.gov/pn-bin/%s?parameter=%s%%20%s' +
+            '&syer=%s&smnth=%s&sdy=%s&eyer=%s&emnth=%s&edy=%s' ) %
+	  ( service[mode], station, param,
+            start.year, start.month, start.day,
+            end.year, end.month, end.day ) )
+  if args.debug == True: sys.stderr.write( url + '\n' )
+  input = process_usbr( mode, requests.get( url, verify=False ).text )
+  if len( input ) < 1 and mode == 'realtime':
+    url = url.replace( service['realtime'], service['realtime_alt'] )
+    if args.debug == True:
+      sys.stderr.write( 'No data found trying alternate service:\n%s\n' %
+			( url ) )
+    input = process_usbr( mode, requests.get( url, verify=False ).text )
+ 
+  print '"%s":\n  timezone: "%s"\n  units: "%s"\n  timeseries:' % ( ts_id,
+							    timezone, units )
+  for n in input:
+    stamp, val = n[:2]
+    print '    %s: %s' % ( stamp, strip_float( val ) )
+  print '---'

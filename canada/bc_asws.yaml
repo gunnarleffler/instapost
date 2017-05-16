@@ -1,0 +1,456 @@
+AKNQ2:
+  PC:
+    observed: AKNB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: AKNB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: AKNB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: AKNB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: AKNB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+BARQ2:
+  PC:
+    observed: BARB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: BARB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: BARB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: BARB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: BARB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+BIRQ2:
+  PC:
+    observed: BIRB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: BIRB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: BIRB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: BIRB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+BKVQ2:
+  PC:
+    observed: BKVB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: BKVB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: BKVB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: BKVB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+BMNQ2:
+  PC:
+    observed: BMNB.Precip-Cum.Inst.15Minutes.0.BCENVIRO-RAW
+  SW:
+    observed: BMNB.Depth-SWE.Inst.15Minutes.0.BCENVIRO-RAW
+  TA:
+    observed: BMNB.Temp-Air.Inst.15Minutes.0.BCENVIRO-RAW
+  TN:
+    observed: BMNB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: BMNB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+BOSQ2:
+  PC:
+    observed: BOSB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: BOSB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: BOSB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: BOSB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: BOSB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+BVRQ2:
+  PC:
+    observed: BVRB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: BVRB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: BVRB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: BVRB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+CPBQ2:
+  TN:
+    observed: CPBB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RVF-HPC-FCST
+  TX:
+    observed: CPBB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RVF-HPC-FCST
+CRSQ2:
+  TN:
+    observed: CRSB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RVF-HPC-FCST
+  TX:
+    observed: CRSB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RVF-HPC-FCST
+CWRQ2:
+  PC:
+    observed: CWRB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: CWRB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: CWRB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: CWRB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: CWRB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+DBCQ2:
+  PC:
+    observed: DBCB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: DBCB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: DBCB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: DBCB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+DCDQ2:
+  PC:
+    observed: DCDB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: DCDB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: DCDB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: DCDB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+EACQ2:
+  PC:
+    observed: EACB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: EACB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: EACB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: EACB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: EACB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+ERFQ2:
+  PC:
+    observed: ERFB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: ERFB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: ERFB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: ERFB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+FDLQ2:
+  PC:
+    observed: FDLB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: FDLB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: FDLB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: FDLB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+FLKQ2:
+  PC:
+    observed: FLKB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: FLKB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: FLKB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: FLKB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: FLKB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+FNEQ2:
+  TN:
+    observed: FNEB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RVF-HPC-FCST
+  TX:
+    observed: FNEB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RVF-HPC-FCST
+FQRQ2:
+  PC:
+    observed: FQRB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: FQRB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: FQRB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: FQRB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+GEBQ2:
+  TN:
+    observed: GEBB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RVF-HPC-FCST
+  TX:
+    observed: GEBB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RVF-HPC-FCST
+GOLQ2:
+  PC:
+    observed: GOLB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: GOLB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: GOLB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: GOLB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+GRNQ2:
+  PC:
+    observed: GRNB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: GRNB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: GRNB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: GRNB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: GRNB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+GROQ2:
+  PC:
+    observed: GROB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: GROB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: GROB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: GROB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: GROB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+GRPQ2:
+  PC:
+    observed: GRPB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: GRPB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: GRPB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: GRPB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+GRTQ2:
+  PC:
+    observed: GRTB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: GRTB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: GRTB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: GRTB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+ILLQ2:
+  PC:
+    observed: ILLB.Precip-Cum.Inst.1Hour.0.BCENVIRO-RAW
+  TA:
+    observed: ILLB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: ILLB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: ILLB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+KOSQ2:
+  PC:
+    observed: KOSB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: KOSB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: KOSB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: KOSB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: KOSB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+MNCQ2:
+  PC:
+    observed: MNCB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: MNCB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: MNCB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: MNCB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: MNCB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+MOLQ2:
+  PC:
+    observed: MOLB.Precip-Cum.Inst.1Hour.0.BCENVIRO-RAW
+  SW:
+    observed: MOLB.Depth-SWE.Inst.1Hour.0.BCENVIRO-RAW
+  TA:
+    observed: MOLB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: MOLB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: MOLB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+MORQ2:
+  PC:
+    observed: MORB.Precip-Cum.Inst.1Hour.0.BCENVIRO-RAW
+  SW:
+    observed: MORB.Depth-SWE.Inst.1Hour.0.BCENVIRO-RAW
+  TA:
+    observed: MORB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: MORB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: MORB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+MSRQ2:
+  PC:
+    observed: MSRB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: MSRB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: MSRB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: MSRB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: MSRB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+MTCQ2:
+  SW:
+    observed: MTCB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: MTCB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: MTCB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: MTCB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+MTRQ2:
+  PC:
+    observed: MTRB.Precip-Cum.Inst.1Hour.0.BCENVIRO-RAW
+  SW:
+    observed: MTRB.Depth-SWE.Inst.1Hour.0.BCENVIRO-RAW
+  TA:
+    observed: MTRB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: MTRB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: MTRB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+MTWQ2:
+  PC:
+    observed: MTWB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: MTWB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: MTWB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: MTWB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: MTWB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+MYMQ2:
+  PC:
+    observed: MYMB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: MYMB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: MYMB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: MYMB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: MYMB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+NAKQ2:
+  PC:
+    observed: NAKB.Precip-Cum.Inst.1Hour.0.BCENVIRO-RAW
+  TA:
+    observed: NAKB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: NAKB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: NAKB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+NSTQ2:
+  PC:
+    observed: NSTB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: NSTB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: NSTB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: NSTB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: NSTB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+PKMQ2:
+  PC:
+    observed: PKMB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: PKMB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: PKMB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+PPLQ2:
+  PC:
+    observed: PPLB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: PPLB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: PPLB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: PPLB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: PPLB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+REDQ2:
+  PC:
+    observed: REDB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: REDB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: REDB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: REDB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: REDB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+RVCQ2:
+  PC:
+    observed: RVCB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: RVCB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: RVCB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: RVCB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: RVCB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+SLKQ2:
+  PC:
+    observed: SLKB.Precip-Cum.Inst.1Hour.0.BCENVIRO-RAW
+  SW:
+    observed: SLKB.Depth-SWE.Inst.1Hour.0.BCENVIRO-RAW
+  TA:
+    observed: SLKB.Temp-Air.Inst.1Hour.0.BCENVIRO-RAW
+  TN:
+    observed: SLKB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: SLKB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+SZKQ2:
+  PC:
+    observed: SZKB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: SZKB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: SZKB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: SZKB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: SZKB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+TAHQ2:
+  PC:
+    observed: TAHB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: TAHB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: TAHB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: TAHB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+UMCQ2:
+  PC:
+    observed: UMCB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: UMCB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: UMCB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: UMCB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: UMCB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+WJA:
+  TN:
+    observed: WJAB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RVF-HPC-FCST
+  TX:
+    observed: WJAB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RVF-HPC-FCST
+WLLQ2:
+  SW:
+    observed: WLLB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+YHDQ2:
+  PC:
+    observed: YHDB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: YHDB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: YHDB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: YHDB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: YHDB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+YNKQ2:
+  PC:
+    observed: YNKB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
+  SW:
+    observed: YNKB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
+  TA:
+    observed: YNKB.Temp-Air.Inst.0.0.BCENVIRO-RAW
+  TN:
+    observed: YNKB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
+  TX:
+    observed: YNKB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
