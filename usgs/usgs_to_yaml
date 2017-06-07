@@ -1,0 +1,206 @@
+#!/usr/local/bin/python
+
+import argparse, pytz, re, requests, sys
+from datetime import datetime, timedelta
+
+###############################################################################
+# Strip hash-delimited comments out of text, return a list of non-empty lines
+
+def no_comment( raw ):
+  comment = re.compile( '#.*' )
+  has_content = re.compile( '\S' )
+  cooked = []
+  for line in raw.split( '\n' ):
+    line = comment.sub( '', line )                     # Strip comments
+    if not has_content.search( line ): continue        # Ignore empty lines
+    cooked.append( line )
+  return cooked
+
+###############################################################################
+# Process the comment-free lines of an RDB file into individual time series
+# There is the possibility of a parameter existing for more than one sensor
+# at the same station, so store output by parameter, then sensor, then 
+# timestamp.
+
+def process_rdb( text, usgs_id, mode ):
+
+  #
+  # Lex the RDB content (minus comments) into a list of lists
+  #
+
+  rdb = []
+  for line in no_comment( text ):
+    rdb.append( line.split( '\t' ) )
+
+  output = {}
+  if len( rdb ) < 2:             # No data.  Probably a bad site ID
+    return output
+
+  #
+  # Organize the content into distinct time series
+  #
+  
+  count = 0
+  one_day = timedelta( days=1 )
+
+  ( param_list, sizes ) = rdb[:2]
+
+  for record in rdb[2:]:
+    data = []
+    for i in range( len( param_list ) ):
+      key   = param_list[i]
+      value =     record[i]
+      if key == 'agency_cd':
+        if value != 'USGS':
+          sys.stderr.write(
+            "WARNING: Unrecognized agency '{}'\n".format( value ) )
+      elif key == 'site_no':
+        if value != usgs_id:
+          sys.stderr.write(
+            "WARNING: Unexpected site code '{}'\n".format( value ) )
+      elif key == 'datetime':
+        dt = datetime.strptime( value, date_format )
+
+        # We want to store daily at the end of the local day.
+        # Since USGS daily values do not have a time zone, assume Pacific
+
+        if mode == 'daily':
+          dt += one_day
+          dt =  pacific.localize( dt )
+
+      elif key == 'tz_cd':
+        zone = pytz.utc
+        if   value.startswith( 'P' ): zone = pacific
+        elif value.startswith( 'M' ): zone = mountain
+        else:
+          sys.stderr.write(
+            "WARNING: Unexpected timezone '{}'\n".format( value ) )
+        dt =  zone.localize( dt )
+      elif key.endswith( '_cd' ):
+        pass
+      else:
+        sensor, param = key.split( '_' )[:2]
+        if param not in output: output[param] = {}
+        if sensor not in output[param]: output[param][sensor] = {}
+        if value != '':
+          output[param][sensor][dt] = value
+    count += 1
+
+  if args.verbose:
+    sys.stderr.write( "Processed {} lines\n".format( count ) )
+    
+  return output
+
+###############################################################################
+# Convert time series into YAML format.  If no sensor is specified, use a
+# random sensor giving that parameter, but complain if there's more than one
+# to choose from.
+
+def rdb_to_yaml( data, usgs_id, params ):
+  for item in params:
+    usgs_param, units, ts_id = item[:3]
+    if usgs_param.find( '_' ) != -1:
+      sensor, param = usgs_param.split( '_' )[:2]
+    else:
+      sensor, param = None, usgs_param
+    if param in data:
+      if sensor is not None:
+        ts = data[param][sensor]
+      else:
+        if len( data[param] ) > 1:
+          sys.stderr.write( "WARNING: more than one sensor for parameter '" +
+                            param + "'\n" )
+        ts = data[param][data[param].keys()[0]]
+      if args.verbose:
+        sys.stderr.write( "  Writing '{}'\n".format( ts_id ) )
+      print '"{}":'.format( ts_id )
+      print '  units: "{}"'.format( units )
+      print '  timeseries:'
+      for stamp in sorted( ts ):
+        print "    {}: {}".format( stamp, ts[stamp] )
+      print "---"
+    else:
+      sys.stderr.write(
+        "WARNING: for {}, parameter '{}' not found\n".format( ts_id,
+                                                              usgs_param ) )
+
+###############################################################################
+###############################################################################
+
+p = argparse.ArgumentParser()
+p.add_argument( 'config', help='Configuration file' )
+p.add_argument( '-s', '--source', help='set SHEF source code' )
+p.add_argument( '-l', '--lookback', help='set lookback in days', type=int,
+                default=1 )
+p.add_argument( '-p', '--por', action='store_true',
+                help='Get entire period-of-record (ignores lookback)' )
+p.add_argument( '-v', '--verbose', action='store_true', help='Work verbosely' )
+args = p.parse_args()
+
+mode = 'realtime'
+lookback = int( args.lookback )
+
+pacific  = pytz.timezone( 'US/Pacific' )
+mountain = pytz.timezone( 'US/Mountain' )
+
+#
+# Based on the configuration file, queue up data to gather by USGS ID and
+# mode.  Append multiple stations to the list to be applied in turn on a 
+# single network read for efficiency's sake.
+#
+
+todo = {}
+for line in no_comment( open( args.config ).read() ):
+  tokens = line.split()
+  if tokens[0].lower() == 'mode':
+    mode = tokens[1].lower()
+    continue
+  ( usgs_id, usgs_param, units, ts_id ) = tokens[:4]
+  if usgs_id not in todo: todo[usgs_id] = {}
+  if mode not in todo[usgs_id]: todo[usgs_id][mode] = []
+  todo[usgs_id][mode].append( [ usgs_param, units, ts_id ] )
+
+#
+# For every distinct USGS ID and mode, get data from the USGS web site,
+# then process it for all sensors and parameters in the configuration.
+#
+
+for usgs_id in sorted( todo ):
+  for mode in todo[usgs_id]:
+
+    # Determine where and with what parameters to gather data
+
+    if mode == 'realtime':
+      date_format = '%Y-%m-%d %H:%M'
+      host = 'waterdata.usgs.gov'
+      if lookback > 119: host = 'nwis.' + host
+      url = 'https://{}/nwis/uv/?format=rdb&period={}&site_no={}'.format( host,
+                                                           lookback, usgs_id )
+    elif mode == 'daily':
+      date_format = '%Y-%m-%d'
+      end = datetime.now()
+      if args.por: begin = datetime( 1885, 1, 1 )
+      else:   begin = end - timedelta( days=lookback )
+      url = 'https://waterdata.usgs.gov/nwis/dv?format=rdb'
+      url += '&begin_date={}&end_date={}'.format( begin.strftime( date_format ),
+                                                  end.strftime( date_format ) )
+      url += '&format=rdb&referred_module=sw&site_no={}'.format( usgs_id )
+
+    # Gather data from the USGS web site
+     
+    if args.verbose:
+      print >>sys.stderr, "Getting {} data from '{}'".format( mode, url )
+    retries = 0
+    while retries < 5:
+      try:
+        content = requests.get( url ).content
+        break
+      except:
+        sys.stderr.write( "Retrying URL '{}'\n".format( url ) )
+        retries += 1
+
+    # Process the web content
+
+    rdb = process_rdb( content, usgs_id, mode )
+    if len( rdb ) > 0:
+      rdb_to_yaml( rdb, usgs_id, todo[usgs_id][mode] )

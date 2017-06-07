@@ -1,11 +1,11 @@
-#!/usr/local/bin/python -u
+#!/usr/local/bin/python
 helpstr = '''
   _           _                        _   
  (_)_ __  ___| |_ __ _ _ __   ___  ___| |_ 
  | | '_ \/ __| __/ _` | '_ \ / _ \/ __| __|
  | | | | \__ \ || (_| | |_) | (_) \__ \ |_ 
  |_|_| |_|___/\__\__,_| .__/ \___/|___/\__|
-                      |_|v1.2.1 5/16/2017
+                      |_|v1.3.1 6/06/2017
                  
 post data to CWMSv3+ databases in realtime
 '''
@@ -21,6 +21,7 @@ os.putenv("ORACLE_HOME", conf["ORACLE_HOME"])
 sys.path.append(conf["PATH"])
 
 ###############################################################################
+
 
 def log(message, level="MSG"):
   '''
@@ -68,10 +69,10 @@ class dataService:
       self.cur.close()
     self.dbconn.close()
 
-  def getDefaultUnits( self, tsid ):
+  def getDefaultUnits(self, tsid):
     try:
       tsid = tsid.lower()
-      tokens = tsid.split( "." )
+      tokens = tsid.split(".")
 
       #check to see if full Parameter is in default units and return
       param = tokens[1]
@@ -79,13 +80,12 @@ class dataService:
         return self.configuration["defaultUnits"][param]
 
       #check to see if parameter is in default units and return
-      param = tokens[1].split( "-" )[0]
+      param = tokens[1].split("-")[0]
       if param in self.configuration["defaultUnits"]:
         return self.configuration["defaultUnits"][param]
     except:
       pass
-    return ""                            # Use database default
-
+    return ""  # Use database default
 
   def getDefaultConfiguration(self):
     conf = {
@@ -115,15 +115,15 @@ class dataService:
       ts_cur = self.cur.var(cx_Oracle.CURSOR)
       if units.lower() == "default":
         units = self.getDefaultUnits(tsid)
-      self.cur.callproc('cwms_ts.retrieve_ts',
-                        [ ts_cur, tsid, units,
-                          start_time.astimezone( pytz.utc ),
-                            end_time.astimezone( pytz.utc ) ])
+      self.cur.callproc('cwms_ts.retrieve_ts', [
+          ts_cur, tsid, units, start_time.astimezone(pytz.utc),
+          end_time.astimezone(pytz.utc)
+      ])
       output = []
       for record in ts_cur.getvalue():
         output.append(list(record))
         #log (str(output[-1]))
-        output[-1][0] = record[0].replace( tzinfo=pytz.utc )
+        output[-1][0] = record[0].replace(tzinfo=pytz.utc)
     except Exception, e:
       self.status = "Could not retrieve %s: %s" % (tsid, str(e))
       log(self.status)
@@ -147,13 +147,14 @@ class dataService:
       log("%s\t%s\t%s\t%s" % (tsid, stamp.isoformat(), val, units),
           level="STOR")
     try:
-      if values != []:
+      valnum = len(values)
+      log ("Writing %s values." % str(valnum))
+      if valnum != 0:
         self.cur.callproc('cwms_ts.store_ts', [
             tsid, units, times,
             self.cur.arrayvar(cx_Oracle.NATIVE_FLOAT, values), qualities,
             'REPLACE ALL'
         ])
-      log("Wrote %d values." % len(values))
     except Exception, e:
       self.status = "Could not store %s: %s" % (tsid, str(e))
       log(self.status, level="ERROR")
@@ -189,12 +190,19 @@ def process(raw, fmt):
     units = raw[tsid].get("units", "default")
     mytz = pytz.timezone(raw[tsid].get("timezone", "GMT"))
     rawts = raw[tsid].get("timeseries", {})
+    if manifest:
+      if tsid in manifest:
+        log("Aliasing: %s to %s" % (tsid, manifest[tsid]))
+        tsid = manifest[tsid]
+      else:
+        log("%s not in manifest, skipping." % tsid)
+        continue
     if rawts == None:
-      log(tsid+" has no values.", level="WARN")
+      log(tsid + " has no values.", level="WARN")
     else:
       for key in rawts:
         try:
-          if isinstance( key, datetime.datetime ):
+          if isinstance(key, datetime.datetime):
             tstamp = key
           else:
             tstamp = dateparser.parse(key, fuzzy=True)
@@ -203,7 +211,7 @@ def process(raw, fmt):
           ts.insert(tstamp, float(rawts[key]))
         except Exception, e:
           log(str(e), level="ERROR")
-      ds.writeDiff(tsid, units, ts )
+      ds.writeDiff(tsid, units, ts)
 
 
 def post(infile, fmt="YAML"):
@@ -211,12 +219,14 @@ def post(infile, fmt="YAML"):
     raw = []
     for line in infile:
       if line.strip() == "---":
-        if raw != []: process("".join(raw), fmt)
+        if raw != []:
+          process("".join(raw), fmt)
         raw = []
       else:
         raw.append(line)
     if raw != []:
       process("".join(raw), fmt)
+    del raw
   except Exception, e:
     log(str(e), level="FATAL")
 
@@ -226,11 +236,12 @@ def post(infile, fmt="YAML"):
 p = argparse.ArgumentParser(
     description=helpstr, formatter_class=argparse.RawDescriptionHelpFormatter)
 p.add_argument('-v', '--verbose', action='store_true', help='Work verbosely')
-p.add_argument('-t', '--tsv', action='store_true', help='input in TSV format')
-p.add_argument('-p', '--pathname', help='database pathname to store TSV file')
-p.add_argument('-y', '--yaml', action='store_true', help='input in YAML format')
-p.add_argument('-j', '--json', action='store_true', help='input in JSON format')
-p.add_argument('-f', '--file', help='specify input file (default is STDIN)')
+p.add_argument('-t', '--tsv', action='store_true', help='Input in TSV format')
+p.add_argument('-f', '--file', help='Specify input file (default is STDIN)')
+p.add_argument('-p', '--pathname', help='Database pathname to store TSV file')
+p.add_argument('-m', '--manifest', help='Manifest file in YAML format, used to filter and alias input')
+p.add_argument('-y', '--yaml', action='store_true', help='Input in YAML format (default)')
+p.add_argument('-j', '--json', action='store_true', help='Input in JSON format')
 args = p.parse_args()
 
 infile = sys.stdin
@@ -248,6 +259,13 @@ if ds.status == "OK":
   log("Connected to: " + ds.configuration["dbname"])
 else:
   log(ds.status, level="FATAL")
+
+manifest = None
+if args.manifest:
+  try:
+    manifest = yaml.safe_load(open(args.manifest))
+  except:
+    log(str(e), level="ERROR")
 
 if args.tsv:
   rdb_to_file(rdb, id, dest, sensors, mode)

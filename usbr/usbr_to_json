@@ -1,5 +1,5 @@
 #!/usr/local/bin/python
-import argparse, requests, shlex, sys
+import argparse, requests, shlex, sys, time
 from datetime import datetime, timedelta
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -9,7 +9,7 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 def process_usbr(mode, buffer):
   format = {'daily': '%m/%d/%Y', 'realtime': '%m/%d/%Y %H:%M'}
-  nodataset = {'MISSING': 0, 'NO RECORD': 0, '': 0}
+  nodataset = {'MISSING': 0, 'NO RECORD': 0, '998877.00n':0, '998877.00':0, '': 0}
   flag = 0
   output = []
   errline = ''
@@ -72,6 +72,10 @@ parser.add_argument(
     '-e', '--end', help='End data gathering at YYYY-mm-dd, default: today')
 parser.add_argument(
     '-d', '--debug', help='Produce debugging output', action='store_true')
+parser.add_argument(
+    '-a', '--alternate', help='Use alternate webservice', action='store_true')
+parser.add_argument(
+    '-p', '--pause', type=int, help='Pause between each get operation. Useful for bulk loads')
 
 args = parser.parse_args()
 
@@ -108,6 +112,8 @@ for line in open(args.station_file):
           '&syer=%s&smnth=%s&sdy=%s&eyer=%s&emnth=%s&edy=%s') %
          (service[mode], station, param, start.year, start.month, start.day,
           end.year, end.month, end.day))
+  if args.alternate:
+    url = url.replace(service['realtime'], service['realtime_alt'])
   if args.debug == True:
     sys.stderr.write(url + '\n')
   input = process_usbr(mode, requests.get(url, verify=False).text)
@@ -128,3 +134,7 @@ for line in open(args.station_file):
       first = ",\n"
   print '}\n}\n}'
   print '---'
+  if args.pause:
+    if args.debug: 
+      sys.stderr.write('Pausing for %s seconds' % str(args.pause))
+    time.sleep (args.pause)

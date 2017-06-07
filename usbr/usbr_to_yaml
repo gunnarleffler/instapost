@@ -7,8 +7,8 @@ requests.packages.urllib3.disable_warnings( InsecureRequestWarning )
 ###############################################################################
 
 def process_usbr( mode, buffer ):
-  format = {    'daily': '%m/%d/%Y', 'realtime': '%m/%d/%Y %H:%M' }
-  nodataset = {   'MISSING': 0, 'NO RECORD': 0, '': 0 }
+  format = { 'daily': '%m/%d/%Y', 'realtime': '%m/%d/%Y %H:%M' }
+  nodataset = { 'MISSING': 0, 'NO RECORD': 0, '': 0, '998877.00n': 0, '998877.00': 0 }
   flag = 0
   output = []
   errline = ''

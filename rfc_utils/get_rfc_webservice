@@ -1,8 +1,8 @@
 #!/usr/local/bin/python
 #!/usr/bin/env python
 helpstr = '''
-get_rfc_local v1.4.0
-1/26/2017
+get_rfc_webservice v1.5.0
+6/05/2017
 This program retireves observed and forecast data from the NWRFC.
 POC: Gunnar Leffler
 
@@ -57,6 +57,7 @@ dataURL = "http://www.nwrfc.noaa.gov/xml/xml.cgi?id=LOC&pe=PE&dtype=b&numdays=NU
 rfcServer = "http://www.nwrfc.noaa.gov"
 PE_xref = {
     "QI": "inflow",
+    "QA": "adjusted_discharge",
     "QR": "discharge",
     "HF": "forebay_elevation",
     "HP": "forebay_elevation",
@@ -282,9 +283,12 @@ if __name__ == "__main__":
       timefilter = config[loc][pe].get("timefilter", "")
       wsPE = config[loc][pe].get(
           "use_pe", pe)  #sometimes the RFC misfiles data under other PEs
-      output = parseWSdata(
+      try:
+        output = parseWSdata(
           getWebService(loc, wsPE, lookback), pe, wsPE, config[loc][pe], loc,
           timefilter)
+      except:
+         sys.stderr.write("Error occured while parsing %s %s.\n" % (loc, pe))
       if not args.rawXML and not args.rawJSON and output != {}:
         print yaml.safe_dump(output, default_flow_style=False)
         print "---"
