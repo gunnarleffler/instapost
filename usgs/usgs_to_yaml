@@ -83,7 +83,12 @@ def process_rdb( text, usgs_id, mode ):
         if param not in output: output[param] = {}
         if sensor not in output[param]: output[param][sensor] = {}
         if value != '':
-          output[param][sensor][dt] = value
+          if value.endswith( '_Ice' ):
+            value = value[:-4]
+            quality = 'QUESTIONABLE'
+          else:
+            quality = ''
+          output[param][sensor][dt] = [ value, quality ]
     count += 1
 
   if args.verbose:
@@ -117,7 +122,12 @@ def rdb_to_yaml( data, usgs_id, params ):
       print '  units: "{}"'.format( units )
       print '  timeseries:'
       for stamp in sorted( ts ):
-        print "    {}: {}".format( stamp, ts[stamp] )
+        value, quality = ts[stamp][:2]
+        if quality == '':
+          print "    {}: {}".format( stamp, value )
+        else:
+          print '    {}:\n      val: {}\n      qual: {}'.format( stamp, value,
+                                                                 quality )
       print "---"
     else:
       sys.stderr.write(
@@ -129,11 +139,8 @@ def rdb_to_yaml( data, usgs_id, params ):
 
 p = argparse.ArgumentParser()
 p.add_argument( 'config', help='Configuration file' )
-p.add_argument( '-s', '--source', help='set SHEF source code' )
 p.add_argument( '-l', '--lookback', help='set lookback in days', type=int,
                 default=1 )
-p.add_argument( '-p', '--por', action='store_true',
-                help='Get entire period-of-record (ignores lookback)' )
 p.add_argument( '-v', '--verbose', action='store_true', help='Work verbosely' )
 args = p.parse_args()
 
@@ -179,8 +186,7 @@ for usgs_id in sorted( todo ):
     elif mode == 'daily':
       date_format = '%Y-%m-%d'
       end = datetime.now()
-      if args.por: begin = datetime( 1885, 1, 1 )
-      else:   begin = end - timedelta( days=lookback )
+      begin = end - timedelta( days=lookback )
       url = 'https://waterdata.usgs.gov/nwis/dv?format=rdb'
       url += '&begin_date={}&end_date={}'.format( begin.strftime( date_format ),
                                                   end.strftime( date_format ) )

@@ -5,9 +5,29 @@ helpstr = '''
  | | '_ \/ __| __/ _` | '_ \ / _ \/ __| __|
  | | | | \__ \ || (_| | |_) | (_) \__ \ |_ 
  |_|_| |_|___/\__\__,_| .__/ \___/|___/\__|
-                      |_|v1.3.1 6/06/2017
+                      |_|v1.5.0 6/14/2017
                  
 post data to CWMSv3+ databases in realtime
+
+Default input format is YAML formatted as follows:
+
+Station.Stage.Inst.0.0.RAW:
+  timezone: GMT
+  units: ft
+  timeseries:
+    '2017-06-02 13:00': 10.11
+    '2017-06-02 14:00': 10.1
+---
+Station.Flow.Inst.~6Hours.0.RAW:
+  timezone: GMT
+  units: cfs
+  timeseries:
+    '2017-06-08T00:00:00Z':
+      val: 30060.2
+      qual: PROTECTED
+    '2017-06-08T06:00:00Z':
+      val: 30039.2
+      qual: QUESTIONABLE
 '''
 
 import argparse, re, sys, os, yaml, tslite, pytz, json, cx_Oracle, datetime
@@ -140,11 +160,11 @@ class dataService:
     times, values, qualities = [], [], []
     zero_time = datetime.datetime(1970, 1, 1, tzinfo=pytz.utc)
     for row in valueList:
-      (stamp, val) = row[:2]
+      (stamp, val, quality) = row[:3]
       times.append((stamp - zero_time).total_seconds() * 1000)
       values.append(val)
-      qualities.append(0)
-      log("%s\t%s\t%s\t%s" % (tsid, stamp.isoformat(), val, units),
+      qualities.append(quality)
+      log("%s\t%s\t%s\t%s\t%s" % (tsid, stamp.isoformat(), val, units, quality),
           level="STOR")
     try:
       valnum = len(values)
@@ -208,9 +228,16 @@ def process(raw, fmt):
             tstamp = dateparser.parse(key, fuzzy=True)
           if tstamp.tzinfo == None:
             tstamp = mytz.localize(tstamp)
-          ts.insert(tstamp, float(rawts[key]))
+          if type(rawts[key]) is dict:
+            qual = conf["qualityFlags"].get(rawts[key].get("qual","Null").upper(),0)
+            ts.insert(tstamp, float(rawts[key].get("val",None)), quality = qual)
+          else:
+            ts.insert(tstamp, float(rawts[key]))
         except Exception, e:
           log(str(e), level="ERROR")
+      if args.snap:
+        interval = ts.TD(args.snap)
+        ts = ts.snap(interval, interval/2)
       ds.writeDiff(tsid, units, ts)
 
 
@@ -239,6 +266,7 @@ p.add_argument('-v', '--verbose', action='store_true', help='Work verbosely')
 p.add_argument('-t', '--tsv', action='store_true', help='Input in TSV format')
 p.add_argument('-f', '--file', help='Specify input file (default is STDIN)')
 p.add_argument('-p', '--pathname', help='Database pathname to store TSV file')
+p.add_argument('-s', '--snap', help='Snap incoming data to defined interval (e.g. 15m, 1h, 1d etc.)')
 p.add_argument('-m', '--manifest', help='Manifest file in YAML format, used to filter and alias input')
 p.add_argument('-y', '--yaml', action='store_true', help='Input in YAML format (default)')
 p.add_argument('-j', '--json', action='store_true', help='Input in JSON format')
