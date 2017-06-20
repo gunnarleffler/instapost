@@ -154,7 +154,7 @@ if __name__ == "__main__":
       if not pe in raw_data:
         if args.verbose: sys.stderr.write("PE code %s not supported\n" % pe)
         continue
-      output = getTS(loc, pe, raw_data[pe])
+      output = {config[loc][pe]:getTS(loc, pe, raw_data[pe])}
       print yaml.safe_dump(output, default_flow_style=False)
       print "---"
 

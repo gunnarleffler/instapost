@@ -1,11 +1,7 @@
 4A30P Aiken Lake:
-  PC:
-    observed: AKNB.Precip-Cum.Inst.0.0.BCENVIRO-RAW
-  SW:
-    observed: AKNB.Depth-SWE.Inst.0.0.BCENVIRO-RAW
-  TA:
-    observed: AKNB.Temp-Air.Inst.0.0.BCENVIRO-RAW
-  TN:
-    observed: AKNB.Temp-Air.Min.~1Day.1Day.BCENVIRO-RAW
-  TX:
-    observed: AKNB.Temp-Air.Max.~1Day.1Day.BCENVIRO-RAW
+  PC: AKNB.Precip-Cum.Inst.0.0.BCRFC-RAW
+  SW: AKNB.Depth-SWE.Inst.0.0.BCRFC-RAW
+  SD: AKNB.Depth-Snow.Inst.0.0.BCRFC-RAW
+  TA: AKNB.Temp-Air.Inst.0.0.BCRFC-RAW
+  TN: AKNB.Temp-Air.Min.~1Day.1Day.BCRFC-RAW
+  TX: AKNB.Temp-Air.Max.~1Day.1Day.BCRFC-RAW
