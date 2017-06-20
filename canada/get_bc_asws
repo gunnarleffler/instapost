@@ -108,10 +108,12 @@ def getTS(site,pe,data):
   inf = csv.DictReader(io.StringIO(data))
   for row in inf:
     dt = parseDate(row.get("DATE (UTC)",None))
-    print dt
     if dt == None: continue
     if site in row:
-      output["timeseries"][dt] = row[site]
+      try:
+        output["timeseries"][dt] = float(row[site])
+      except:
+        pass
   return output
 
 #--------------------------------------------------------------------------------
@@ -150,7 +152,7 @@ if __name__ == "__main__":
   for loc in config:
     for pe in config[loc]:
       if not pe in raw_data:
-        if args.verbose: sys.stderr.write("PE code %s not supported" % pe)
+        if args.verbose: sys.stderr.write("PE code %s not supported\n" % pe)
         continue
       output = getTS(loc, pe, raw_data[pe])
       print yaml.safe_dump(output, default_flow_style=False)
