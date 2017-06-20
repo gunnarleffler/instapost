@@ -68,8 +68,8 @@ def getWebService():
   global raw_data
   for PE in raw_data:
     URL = dataURL % PE
-    if args.verbose:
-      sys.stderr.write("Getting %s \n" % (URL))
+    #if args.verbose:
+     # sys.stderr.write("Getting %s \n" % (URL))
     try:
       raw_data[PE] = requests.get(URL).text
     except:
@@ -98,7 +98,7 @@ def makeconfig(critpath):
   print "---"
   print "".join(leftovers)
 
-def getTS(site,pe,data):
+def getTS(site,pe,data, lookback):
   output = {
         "timeseries": {},
         "units": units_xref.get(pe[:2], "default"),
@@ -106,9 +106,14 @@ def getTS(site,pe,data):
   }
   totals = {}
   inf = csv.DictReader(io.StringIO(data))
+  if pe == 'TX' or pe =='TN': pe = 'TA'
   for row in inf:
     dt = parseDate(row.get("DATE (UTC)",None))
     if dt == None: continue
+    today = datetime.date.today()
+    time_delta = today - dt.date()
+    days = time_delta.days
+    if days > int(lookback): continue
     if site in row:
       try:
         output["timeseries"][dt] = float(row[site])
@@ -147,15 +152,19 @@ if __name__ == "__main__":
     lookback = args.lookback
   else:
     lookback = '5'
-  output = {}
 
   for loc in config:
     for pe in config[loc]:
       if not pe in raw_data:
         if args.verbose: sys.stderr.write("PE code %s not supported\n" % pe)
         continue
-      output = {config[loc][pe]:getTS(loc, pe, raw_data[pe])}
+      output = {config[loc][pe]:getTS(loc, pe, raw_data[pe], lookback)}
       print yaml.safe_dump(output, default_flow_style=False)
       print "---"
 
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2
+
+
+
+
+
