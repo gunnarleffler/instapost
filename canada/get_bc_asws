@@ -146,7 +146,7 @@ def filterDictByMask(data_dict, boolean_mask):
     new_dict = OrderedDict()
     for key in data_dict.keys():
         raw_list = data_dict[key] 
-        new_dict[key] = [i for (i, v) in zip(raw_list, mask) if v]
+        new_dict[key] = [i for (i, v) in zip(raw_list, boolean_mask) if v]
     return new_dict
 
 
