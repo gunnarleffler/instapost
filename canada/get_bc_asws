@@ -25,7 +25,7 @@ PARAMETERS
 
 import sys, os, datetime, requests, re, random, argparse, json, yaml, io, csv
 import dateutil.parser as dateparser
-
+from collections import OrderedDict
 #--------------------------------------------------------------------------------
 #Configuration
 #--------------------------------------------------------------------------------
@@ -106,7 +106,6 @@ def getTS(site,pe,data, lookback):
   }
   totals = {}
   inf = csv.DictReader(io.StringIO(data))
-  if pe == 'TX' or pe =='TN': pe = 'TA'
   for row in inf:
     dt = parseDate(row.get("DATE (UTC)",None))
     if dt == None: continue
@@ -120,6 +119,37 @@ def getTS(site,pe,data, lookback):
       except:
         pass
   return output
+
+
+def returnOrderedDict(raw_data):
+    data = raw_data.split('\r\n')
+    columns = data[0].split(',')
+    data_dict = OrderedDict([(column,[]) for column in columns])
+    for row in data[1:]:
+        new_row = row.split(',')
+        for key,value in zip(data_dict.keys(), new_row):
+            data_dict[key].append(value)
+    return data_dict
+
+def getLookbackMask(data_dict,lookback):
+    lookback = int(lookback)
+    today = datetime.date.today()
+    date = data_dict['DATE (UTC)']
+    date = [parseDate(d) for d in date]
+    date = [d for d in date if d is not None]
+    time_delta = [today - dt.date() for dt in date]
+    days = [td.days for td in time_delta]
+    return [day<lookback for day in days]
+
+
+def filterDictByMask(data_dict, boolean_mask):
+    new_dict = OrderedDict()
+    for key in data_dict.keys():
+        raw_list = data_dict[key] 
+        new_dict[key] = [i for (i, v) in zip(raw_list, mask) if v]
+    return new_dict
+
+
 
 #--------------------------------------------------------------------------------
 # main()
@@ -152,7 +182,7 @@ if __name__ == "__main__":
     lookback = args.lookback
   else:
     lookback = '5'
-
+    
   for loc in config:
     for pe in config[loc]:
       if not pe in raw_data:
@@ -163,6 +193,11 @@ if __name__ == "__main__":
       print "---"
 
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2
+
+
+
+
+
 
 
 
