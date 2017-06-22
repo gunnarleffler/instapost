@@ -51,7 +51,7 @@ units_xref = {
     "TN": "C",
     "TA": "C",
     "PC": "mm",
-    "SD": "mm",
+    "SD": "cm",
     "SW": "mm"
 }
 
