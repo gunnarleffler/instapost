@@ -25,7 +25,7 @@ def process_usbr(mode, buffer):
         # USBR's new webservice appends 'Edited' to QCd data 
 
         tokens[1].replace('Edited', '')
-        if tokens[1] not in nodataset:
+        if tokens[1] not in nodataset and "+" not in tokens[1]:
           output.append([datetime.strptime(tokens[0], format[mode]), tokens[1]])
         elif args.debug == True:
           sys.stderr.write('%s\t%s\n' % (errline, s))
@@ -57,8 +57,9 @@ def strip_float(input):
 ###############################################################################
 
 service = {
-    'daily': 'webarccsv.pl',
-    'realtime': 'instant.pl',
+    'daily'       : 'daily.pl',
+    'daily_alt'   : 'webarccsv.pl',
+    'realtime'    : 'instant.pl',
     'realtime_alt': 'webdaycsv.pl'
 }
 
@@ -113,12 +114,14 @@ for line in open(args.station_file):
          (service[mode], station, param, start.year, start.month, start.day,
           end.year, end.month, end.day))
   if args.alternate:
-    url = url.replace(service['realtime'], service['realtime_alt'])
+    if mode == 'realtime': url = url.replace(service['realtime'], service['realtime_alt'])
+    if mode == 'daily': url = url.replace(service['daily'], service['daily_alt'])
   if args.debug == True:
     sys.stderr.write(url + '\n')
   input = process_usbr(mode, requests.get(url, verify=False).text)
-  if len(input) < 1 and mode == 'realtime':
-    url = url.replace(service['realtime'], service['realtime_alt'])
+  if len(input) < 1:
+    if mode == 'realtime': url = url.replace(service['realtime'], service['realtime_alt'])
+    if mode == 'daily': url = url.replace(service['daily'], service['daily_alt'])
     if args.debug == True:
       sys.stderr.write('No data found trying alternate service:\n%s\n' % (url))
     input = process_usbr(mode, requests.get(url, verify=False).text)

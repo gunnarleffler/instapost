@@ -1,8 +1,8 @@
 #!/usr/local/bin/python
 #!/usr/bin/env python
 '''
-get_rfc_local v0.7.0
-11/30/2015 
+get_rfc_local v1.0.0
+09/25/2017 
 This program retireves local inflows and forecasts from the NWRFC.
 The config file 
 POC: Gunnar Leffler
@@ -83,15 +83,25 @@ def getCatalog():
   path = ""
   catalog = {}
   if args.verbose:
-    sys.stderr.write("Getting catalog file from server...")
+    sys.stderr.write("Getting catalog file from server...\n")
   r = requests.get(catalogURL)
   raw = json.loads(r.text)
   for item in raw:
     if "path" in item:
       path = item["path"]
+      if args.lookback:
+        sys.stderr.write(" looking back %d days.\n" % (len(catalog)))
+        _now = datetime.datetime.now()
+        dt = _now - datetime.timedelta(days=args.lookback)
+        path = path.split("/")
+        path[-1] = dt.strftime("%Y%m%d")
+        path[-2] = dt.strftime("%Y")
+        path = "/".join(path)
     elif "fn" in item:
       key = item["fn"].split(".")[0]
       catalog[key] = rfcServer + path + "/" + item["fn"]
+      if args.lookback:
+        catalog[key] = catalog[key].replace( _now.strftime("%Y%m%d"), dt.strftime("%Y%m%d"))
   if args.verbose:
     sys.stderr.write(" %d entries found.\n" % (len(catalog)))
   return catalog
@@ -123,11 +133,14 @@ def getLocalTs(loc):
     output["timeseries"] = {}
     output["units"] = ts["series"]["header"].get("units", "KCFS")
     missing = ts["series"]["header"].get("missVal", "-999")
-    for item in ts["series"]["event"]:
-      if item.get("@value") == missing:
-        continue
-      timestamp = "%sT%s+0%d:00" % (item["@date"], item["@time"], timezone)
-      output["timeseries"][timestamp] = float(item.get("@value"))
+    try:
+      for item in ts["series"]["event"]:
+        if item.get("@value") == missing:
+          continue
+        timestamp = "%sT%s+0%d:00" % (item["@date"], item["@time"], timezone)
+        output["timeseries"][timestamp] = float(item.get("@value"))
+    except:
+      sys.stderr.write("%s yielded an error." % (loc))
   elif args.verbose:
     sys.stderr.write("%s not found in catalog." % (loc))
   return output
@@ -147,6 +160,7 @@ if __name__ == "__main__":
       '-r', '--raw', action='store_true', help='Output raw XML from RFC')
   p.add_argument(
       '-c', '--catalog', action='store_true', help='Output catalog from RFC')
+  p.add_argument('-l', '--lookback', type=int, help='Lookback in days')
   args = p.parse_args()
   catalog = getCatalog()
   if args.catalog:
