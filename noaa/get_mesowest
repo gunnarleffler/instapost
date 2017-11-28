@@ -1,0 +1,226 @@
+#!/usr/local/bin/python
+#!/usr/bin/env python
+helpstr = '''
+get_mesowest v1.0.0
+10/02/2017
+This program retireves observed data from the noaa mesowest XML service.
+POC: Gunnar Leffler
+
+FORMATTING
+==========
+
+configuration file example
+--------------------------
+
+AGFO3:
+  "Temp":            AGFO.Temp-Air.Inst.0.0.MESOWEST-RAW
+  "Dewp":            AGFO.Temp-DewPoint.Inst.0.0.MESOWEST-RAW
+  "Relh":            AGFO.%-Relative-Humidity.Inst.0.0.MESOWEST-RAW
+  "Direction":       AGFO.Dir-Wind.Inst.0.0.MESOWEST-RAW
+  "Wind":            AGFO.Speed-Wind.Inst.0.0.MESOWEST-RAW
+  "Gust":            AGFO.Speed-Wind-Gust.Inst.0.0.MESOWEST-RAW
+  "Acc Precip":      AGFO.Precip-Cum.Inst.0.0.MESOWEST-RAW
+  "1hr Precip":      AGFO.Precip-Inc.Total.1Hour.1Hour.MESOWEST-RAW
+  "6hr Precip":      AGFO.Precip-Inc.Total.~6Hours.6Hours.MESOWEST-RAW
+  "Solar Radiation": AGFO.Rad.Total.0.1Hour.MESOWEST-RAW
+
+Output
+------
+Output of this program is timeseries data in "instapost" YAML format
+
+PARAMETERS
+==========
+'''
+
+import sys, os, datetime, requests, re, random, argparse, json, yaml
+from xml.dom import minidom
+
+#--------------------------------------------------------------------------------
+#Configuration
+#--------------------------------------------------------------------------------
+
+dataURL = "http://www.wrh.noaa.gov/mesowest/getobextXml.php?sid=LOC&num=HOURS"
+
+units_xref = {"inches": "in", "feet": "ft", "watt/(m**2)": "langley"}
+
+
+#--------------------------------------------------------------------------------
+#XML to dictionary conversion
+#--------------------------------------------------------------------------------
+def parse_element(element):
+  '''Converts XML to dictionary data structure
+    '''
+  dict_data = dict()
+  if element.nodeType == element.TEXT_NODE:
+    if element.data.strip() != "":
+      dict_data = element.data
+  if element.nodeType not in [
+      element.TEXT_NODE, element.DOCUMENT_NODE, element.DOCUMENT_TYPE_NODE
+  ]:
+    for item in element.attributes.items():
+      dict_data["@" + item[0]] = item[1]
+  if element.nodeType not in [element.TEXT_NODE, element.DOCUMENT_TYPE_NODE]:
+    for child in element.childNodes:
+      child_name, child_dict = parse_element(child)
+      if child_name in dict_data:
+        if child_dict != {}:
+          try:
+            dict_data[child_name].append(child_dict)
+          except AttributeError:
+            dict_data[child_name] = [dict_data[child_name], child_dict]
+      else:
+        if child_dict != {}:
+          dict_data[child_name] = child_dict
+    if dict_data.keys() == ["#text"]:
+      dict_data = dict_data["#text"]
+  return element.nodeName, dict_data
+
+
+def xml2dict(txt):
+  dom = minidom.parseString(txt.encode('utf-8'))
+  return parse_element(dom)[1]
+
+
+def xml2json(txt):
+  return json.dumps(xml2dict(txt), sort_keys=True, indent=1)
+
+
+#--------------------------------------------------------------------------------
+#Helper Methods
+#--------------------------------------------------------------------------------
+
+
+def readFile(path):
+  f = open(path, "r")
+  output = f.read()
+  f.close()
+  return output
+
+
+def doTemplate(s, j):
+  for key in j:
+    s = s.replace(key, j[key])
+  return s
+
+
+def loadConfig(path):
+  if args.verbose:
+    sys.stderr.write("loading config file...")
+  output = yaml.safe_load(open(path))
+  if args.verbose:
+    sys.stderr.write(" %d entries found.\n" % (len(output)))
+  return output
+
+
+def getWebService(loc, lookback):
+  output = {}
+  if args.verbose:
+    sys.stderr.write("Getting %s \n" % (loc))
+  URL = dataURL.replace("LOC", loc).replace("HOURS", lookback)
+  try:
+    raw = requests.get(URL).text
+  except:
+    raw = ""
+    sys.stderr.write("could not retrieve %s " % (loc))
+  if args.rawXML:
+    print raw
+  if args.rawJSON:
+    print xml2json(raw)
+  try:
+    output = xml2dict(raw)
+  except:
+    sys.stderr.write("Could not parse %s " % (loc))
+  return output
+
+
+def parseWSdata(ws, conf, loc):
+
+  def getTS(ts, myPE):
+    out = {"timeseries": {}, "units": "", "timezone": "US/Pacific"}
+    #try:
+    if 1 == 1:
+      for t in ts:
+        for item in t["variable"]:
+          if myPE == item["@description"]:
+            try:
+              out["timeseries"][t["@time"]] = float(item["@value"])
+              if "@unit" in item:
+                out["units"] = units_xref.get(item["@unit"], item["@unit"])
+            except:
+              pass
+    #except:
+    #  pass
+    return out
+
+  ws = ws.get("station", {})
+  if ws == {} and args.verbose:
+    sys.stderr.write("No Data Found for %s" % pe)
+  output = {}
+  for PE in conf:
+    path = conf[PE]
+    if "ob" in ws:
+      output[path] = getTS(ws["ob"], PE)
+  return output
+
+
+def makeconfig(critpath):
+  crit = open(critpath, "r").readlines()
+  leftovers = []
+  template = """NWSLID:
+  "Temp":            LOC.Temp-Air.Inst.0.0.MESOWEST-RAW
+  "Dewp":            LOC.Temp-DewPoint.Inst.0.0.MESOWEST-RAW
+  "Relh":            LOC.%-Relative-Humidity.Inst.0.0.MESOWEST-RAW
+  "Direction":       LOC.Dir-Wind.Inst.0.0.MESOWEST-RAW
+  "Wind":            LOC.Speed-Wind.Inst.0.0.MESOWEST-RAW
+  "Gust":            LOC.Speed-Wind-Gust.Inst.0.0.MESOWEST-RAW
+  "Acc Precip":      LOC.Precip-Cum.Inst.0.0.MESOWEST-RAW
+  "1hr Precip":      LOC.Precip-Inc.Total.1Hour.1Hour.MESOWEST-RAW
+  "6hr Precip":      LOC.Precip-Inc.Total.~6Hours.6Hours.MESOWEST-RAW
+  "Solar Radiation": LOC.Rad.Total.0.1Hour.MESOWEST-RAW"""
+  for line in crit:
+    tokens = line.split()
+    try:
+      print template.replace("NWSLID", tokens[0]).replace("LOC", tokens[1])
+    except:
+      sys.stderr.write("ERROR: " + line + "\n")
+
+
+#--------------------------------------------------------------------------------
+# main()
+#--------------------------------------------------------------------------------
+catalog = {}
+args = {}
+config = {}
+if __name__ == "__main__":
+  p = argparse.ArgumentParser(
+      description=helpstr, formatter_class=argparse.RawDescriptionHelpFormatter)
+  p.add_argument('config', help='YAML formatted Configuration file')
+  p.add_argument('-l', '--lookback', help='Lookback a number of hours')
+  p.add_argument('-v', '--verbose', action='store_true', help='Work verbosely')
+  p.add_argument('-rx', '--rawXML', action='store_true', help='Output raw XML')
+  p.add_argument('-rj', '--rawJSON', action='store_true', help='Output JSON')
+  p.add_argument(
+      '-m',
+      '--makeconfig',
+      action='store_true',
+      help='Makes a config file from station list')
+  args = p.parse_args()
+  if args.makeconfig:
+    makeconfig(args.config)
+    sys.exit(0)
+  config = loadConfig(args.config)
+  if args.lookback:
+    lookback = args.lookback
+  else:
+    lookback = '24'
+  output = {}
+  for loc in config:
+    try:
+      output = parseWSdata(getWebService(loc, lookback), config[loc], loc)
+    except:
+      sys.stderr.write("Error occured while parsing %s.\n" % loc)
+    if not args.rawXML and not args.rawJSON and output != {}:
+      print yaml.safe_dump(output, default_flow_style=False)
+      print "---"
+
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2

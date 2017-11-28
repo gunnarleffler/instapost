@@ -1,0 +1,58 @@
+#!/usr/local/bin/python
+import argparse, xml.dom.minidom, sys, yaml
+from datetime import datetime, timedelta
+
+###############################################################################
+# Get the content of the given tagged element.
+# There should only be one, so it's (relatively) safe to use the first one.
+
+
+def get_text(parent, tag):
+  ret = ''
+  for node in parent.getElementsByTagName(tag)[0].childNodes:
+    if node.nodeType == node.TEXT_NODE:
+      ret += node.data
+  return ret
+
+
+###############################################################################
+###############################################################################
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    '-c',
+    '--config',
+    default='/usr/da/nwdp/model/script/STPconfig.yaml',
+    help='maps PIXML locations and parameters to CWMS time series')
+parser.add_argument('xml', nargs='?', default=sys.stdin, help='PIXML data file')
+args = parser.parse_args()
+
+conf = yaml.load(open(args.config))
+dom = xml.dom.minidom.parse(args.xml)
+
+ts_list = dom.getElementsByTagName('TimeSeries')[0]
+
+output = {}
+for ts in ts_list.getElementsByTagName('series'):
+  header = ts.getElementsByTagName('header')[0]
+  loc_id = get_text(header, 'locationId')
+  param = get_text(header, 'parameterId')
+  miss = get_text(header, 'missVal')
+  units = get_text(header, 'units').lower()
+
+  key = '{}.{}'.format(loc_id, param)
+  if key not in conf:
+    sys.stderr.write("Warning: unknown location/parameter: {}\n".format(key))
+    continue
+
+  print '{}:\n  units: {}\n  timeseries:'.format(conf[key], units)
+  for datum in ts.getElementsByTagName('event'):
+    date = datum.getAttribute('date')
+    time = datum.getAttribute('time')
+    value = datum.getAttribute('value')
+    sys.stdout.write('    {}T{}:'.format(date, time))
+    if value == miss:
+      print '\n      val: {}\n      qual: MISSING'.format(value)
+    else:
+      print ' {}'.format(value)
+  print '---'

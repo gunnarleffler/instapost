@@ -1,0 +1,33 @@
+LBCO3:
+  "Temp":            LBCO.Temp-Air.Inst.0.0.MESOWEST-RAW
+  "Dewp":            LBCO.Temp-DewPoint.Inst.0.0.MESOWEST-RAW
+  "Relh":            LBCO.%-Relative-Humidity.Inst.0.0.MESOWEST-RAW
+  "Direction":       LBCO.Dir-Wind.Inst.0.0.MESOWEST-RAW
+  "Wind":            LBCO.Speed-Wind.Inst.0.0.MESOWEST-RAW
+  "Gust":            LBCO.Speed-Wind-Gust.Inst.0.0.MESOWEST-RAW
+  "Acc Precip":      LBCO.Precip-Cum.Inst.0.0.MESOWEST-RAW
+  "1hr Precip":      LBCO.Precip-Inc.Total.1Hour.1Hour.MESOWEST-RAW
+  "6hr Precip":      LBCO.Precip-Inc.Total.~6Hours.6Hours.MESOWEST-RAW
+  "Solar Radiation": LBCO.Rad.Total.0.1Hour.MESOWEST-RAW
+MLFO3:
+  "Temp":            MLFO.Temp-Air.Inst.0.0.MESOWEST-RAW
+  "Dewp":            MLFO.Temp-DewPoint.Inst.0.0.MESOWEST-RAW
+  "Relh":            MLFO.%-Relative-Humidity.Inst.0.0.MESOWEST-RAW
+  "Direction":       MLFO.Dir-Wind.Inst.0.0.MESOWEST-RAW
+  "Wind":            MLFO.Speed-Wind.Inst.0.0.MESOWEST-RAW
+  "Gust":            MLFO.Speed-Wind-Gust.Inst.0.0.MESOWEST-RAW
+  "Acc Precip":      MLFO.Precip-Cum.Inst.0.0.MESOWEST-RAW
+  "1hr Precip":      MLFO.Precip-Inc.Total.1Hour.1Hour.MESOWEST-RAW
+  "6hr Precip":      MLFO.Precip-Inc.Total.~6Hours.6Hours.MESOWEST-RAW
+  "Solar Radiation": MLFO.Rad.Total.0.1Hour.MESOWEST-RAW
+MSFO3:
+  "Temp":            MSFO.Temp-Air.Inst.0.0.MESOWEST-RAW
+  "Dewp":            MSFO.Temp-DewPoint.Inst.0.0.MESOWEST-RAW
+  "Relh":            MSFO.%-Relative-Humidity.Inst.0.0.MESOWEST-RAW
+  "Direction":       MSFO.Dir-Wind.Inst.0.0.MESOWEST-RAW
+  "Wind":            MSFO.Speed-Wind.Inst.0.0.MESOWEST-RAW
+  "Gust":            MSFO.Speed-Wind-Gust.Inst.0.0.MESOWEST-RAW
+  "Acc Precip":      MSFO.Precip-Cum.Inst.0.0.MESOWEST-RAW
+  "1hr Precip":      MSFO.Precip-Inc.Total.1Hour.1Hour.MESOWEST-RAW
+  "6hr Precip":      MSFO.Precip-Inc.Total.~6Hours.6Hours.MESOWEST-RAW
+  "Solar Radiation": MSFO.Rad.Total.0.1Hour.MESOWEST-RAW
