@@ -4,7 +4,7 @@
  | | '_ \/ __| __/ _` | '_ \ / _ \/ __| __|
  | | | | \__ \ || (_| | |_) | (_) \__ \ |_
  |_|_| |_|___/\__\__,_| .__/ \___/|___/\__|
-                      |_|v1.5.0 6/14/2017
+                      |_|v1.6.0 10/18/2017
 
 post data to CWMSv3+ databases in realtime
 
@@ -42,9 +42,17 @@ Requires python 2.7.10+ and cx_Oracle.
 ### /instapost
 Directory which contains the instapost script and dependencies.
 
+### /IDP
+
+`get_idp` - gets idaho power data from thier webservice
+
+`config.yaml` - example configuration file
+
 ### /rfc_utils 
 
 Some utilities to pull data from the NWRFC
+
+`pixml_to_yaml` - converts pixml files to instapost yaml
 
 `get_rfc_local` - gets local flow data from NWRFC
 
