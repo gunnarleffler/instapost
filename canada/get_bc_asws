@@ -1,10 +1,10 @@
 #!/usr/local/bin/python
 #!/usr/bin/env python
 helpstr = '''
-get_bc_asws v1.0.0b
+get_bc_asws v1.0.0
 6/20/2017
 This program retireves observed Automated Snow Weather Station (ASWS) Data
-from BC Environemnt.
+from BCRFC (British Columbia River Forecast Centre).
 
 URL: http://bcrfc.env.gov.bc.ca/data/asp/
 
@@ -13,6 +13,18 @@ POC: Gunnar Leffler
 
 FORMATTING
 ==========
+Config
+------
+
+Configuration is in YAML format and follows the conventions in this example:
+
+4A30P Aiken Lake:
+    PC: AKNB.Precip-Cum.Inst.0.0.BCRFC-RAW
+    SD: AKNB.Depth-Snow.Inst.0.0.BCRFC-RAW
+    SW: AKNB.Depth-SWE.Inst.0.0.BCRFC-RAW
+    TA: AKNB.Temp-Air.Inst.0.0.BCRFC-RAW
+    TN: AKNB.Temp-Air.Min.~1Day.1Day.BCRFC-RAW
+    TX: AKNB.Temp-Air.Max.~1Day.1Day.BCRFC-RAW
 
 
 Output
@@ -30,30 +42,31 @@ from collections import OrderedDict
 #Configuration
 #--------------------------------------------------------------------------------
 
-dataURL = "http://bcrfc.env.gov.bc.ca/data/asp/realtime/data/%s.csv" 
+dataURL = "http://bcrfc.env.gov.bc.ca/data/asp/realtime/data/%s.csv"
 
-raw_data = { "TA": "",
-"PC": "",
-"SW": "",
-"SD": ""
-}
+raw_data = {"TA": "", "PC": "", "SW": "", "SD": ""}
 
-units_xref = {"TX": "C", 
-"TN": "C", 
-"TA": "C",
-"PC": "mm",
-"SD": "mm",
-"SW": "mm"
+units_xref = {
+    "TX": "C",
+    "TN": "C",
+    "TA": "C",
+    "PC": "mm",
+    "SD": "cm",
+    "SW": "mm"
 }
 
 WScache = {}
+
 #--------------------------------------------------------------------------------
 #Helper Methods
 #--------------------------------------------------------------------------------
 
+
 def parseDate(s):
-  try: return dateparser.parse(s)
-  except: return None
+  try:
+    return dateparser.parse(s)
+  except:
+    return None
 
 
 def loadConfig(path):
@@ -64,17 +77,19 @@ def loadConfig(path):
     sys.stderr.write(" %d entries found.\n" % (len(output)))
   return output
 
+
 def getWebService():
   global raw_data
   for PE in raw_data:
     URL = dataURL % PE
     #if args.verbose:
-     # sys.stderr.write("Getting %s \n" % (URL))
+    # sys.stderr.write("Getting %s \n" % (URL))
     try:
       raw_data[PE] = requests.get(URL).text
     except:
       raw = ""
       sys.stderr.write("could not retrieve %s " % (PE))
+
 
 def makeconfig(critpath):
   crit = open(critpath, "r").readlines()
@@ -91,28 +106,32 @@ def makeconfig(critpath):
         config[loc] = {}
       if not pe in config[loc]:
         config[loc][pe] = {}
-      config[loc][pe]["observed"] = tokens[1].replace(".1Day.1",".~1Day.1").replace("RFC","BCENVIRO")
+      config[loc][pe]["observed"] = tokens[1].replace(
+          ".1Day.1", ".~1Day.1").replace("RFC", "BCENVIRO")
     else:
       leftovers.append(line)
   print yaml.safe_dump(config, default_flow_style=False)
   print "---"
   print "".join(leftovers)
 
-def getTS(site,pe,data, lookback):
+
+def getTS(site, pe, data, lookback):
   output = {
-        "timeseries": {},
-        "units": units_xref.get(pe[:2], "default"),
-        "timezone": "GMT"
+      "timeseries": {},
+      "units": units_xref.get(pe[:2], "default"),
+      "timezone": "GMT"
   }
   totals = {}
   inf = csv.DictReader(io.StringIO(data))
   for row in inf:
-    dt = parseDate(row.get("DATE (UTC)",None))
-    if dt == None: continue
+    dt = parseDate(row.get("DATE (UTC)", None))
+    if dt == None:
+      continue
     today = datetime.date.today()
     time_delta = today - dt.date()
     days = time_delta.days
-    if days > int(lookback): continue
+    if days > int(lookback):
+      continue
     if site in row:
       try:
         output["timeseries"][dt] = float(row[site])
@@ -122,80 +141,89 @@ def getTS(site,pe,data, lookback):
 
 
 def returnOrderedDict(data):
-    data = data.split('\r\n')
-    data = [str(d).strip() for d in data]
-    data = filter(None, data)
-    data = data[:-1]
-    columns = data[0].split(',')
-    ordered_dict = OrderedDict([(column,[]) for column in columns])
-    for row in data[1:]:
-        new_row = row.split(',')
-        for key,value in zip(ordered_dict.keys(), new_row):
-            ordered_dict[key].append(value)
-    return ordered_dict
+  data = data.split('\r\n')
+  data = [str(d).strip() for d in data]
+  data = filter(None, data)
+  data = data[:-1]
+  columns = data[0].split(',')
+  ordered_dict = OrderedDict([(column, []) for column in columns])
+  for row in data[1:]:
+    new_row = row.split(',')
+    for key, value in zip(ordered_dict.keys(), new_row):
+      ordered_dict[key].append(value)
+  return ordered_dict
 
-def getLookbackMask(ordered_dict,lookback):
-    lookback = int(lookback)
-    today = datetime.date.today()
-    date = ordered_dict['DATE (UTC)']
-    date = [parseDate(d) for d in date]
-    date = [d for d in date if d is not None]
-    time_delta = [today - dt.date() for dt in date]
-    days = [td.days for td in time_delta]
-    return [day<lookback for day in days]
+
+def getLookbackMask(ordered_dict, lookback):
+  lookback = int(lookback)
+  today = datetime.date.today()
+  date = ordered_dict['DATE (UTC)']
+  date = [parseDate(d) for d in date]
+  date = [d for d in date if d is not None]
+  time_delta = [today - dt.date() for dt in date]
+  days = [td.days for td in time_delta]
+  return [day < lookback for day in days]
 
 
 def filterDictByMask(ordered_dict, boolean_mask):
-    new_dict = OrderedDict()
-    for key in ordered_dict.keys():
-        raw_list = ordered_dict[key] 
-        new_dict[key] = [i for (i, v) in zip(raw_list, boolean_mask) if v]
-    return new_dict
+  new_dict = OrderedDict()
+  for key in ordered_dict.keys():
+    raw_list = ordered_dict[key]
+    new_dict[key] = [i for (i, v) in zip(raw_list, boolean_mask) if v]
+  return new_dict
+
 
 def getDateMaskDictionary(ordered_dict):
-    time_stamp = ordered_dict['DATE (UTC)']
-    dates = [str(time.split(' ')[0].strip()) for time in time_stamp]
-    unique_dates = filter(None,list(set(dates)))
-    unique_dates.sort()
-    date_mask_dictionary =OrderedDict()
-    for day in unique_dates:
-        date_mask_dictionary[day] = [i == day for i in dates]
-    return date_mask_dictionary
+  time_stamp = ordered_dict['DATE (UTC)']
+  dates = [str(time.split(' ')[0].strip()) for time in time_stamp]
+  unique_dates = filter(None, list(set(dates)))
+  unique_dates.sort()
+  date_mask_dictionary = OrderedDict()
+  for day in unique_dates:
+    date_mask_dictionary[day] = [i == day for i in dates]
+  return date_mask_dictionary
+
 
 def returnMaxOrMinDictionary(date_mask_dictionary, ordered_dict, max_or_min):
-    new_dict = OrderedDict()
-    for date in date_mask_dictionary.keys():
-        mask = date_mask_dictionary[date]
-        data_filtered_by_date = filterDictByMask(ordered_dict, mask)
-        location_list = data_filtered_by_date.keys()[1:]
-        for location in location_list:
-            
-            loc = data_filtered_by_date[location]
-            value = max_or_min(loc)
-            index = loc.index(value)
-            time_stamp = data_filtered_by_date['DATE (UTC)'][index]
-            try:new_dict[location].append((time_stamp,value))
-            except KeyError: new_dict[location] = [(time_stamp,value)]
-            
-    return new_dict
+  new_dict = OrderedDict()
+  for date in date_mask_dictionary.keys():
+    mask = date_mask_dictionary[date]
+    data_filtered_by_date = filterDictByMask(ordered_dict, mask)
+    location_list = data_filtered_by_date.keys()[1:]
+    for location in location_list:
+
+      loc = data_filtered_by_date[location]
+      value = max_or_min(loc)
+      index = loc.index(value)
+      time_stamp = data_filtered_by_date['DATE (UTC)'][index]
+      try:
+        new_dict[location].append((time_stamp, value))
+      except KeyError:
+        new_dict[location] = [(time_stamp, value)]
+
+  return new_dict
 
 
-def getDailyMinOrMax(ordered_dict,lookback, max_or_min):
-    lookback_mask =getLookbackMask(ordered_dict,lookback)
-    ordered_dict = filterDictByMask(ordered_dict,lookback_mask)
-    date_mask_dictionary = getDateMaskDictionary(ordered_dict)
-    max_or_min_dictionary = returnMaxOrMinDictionary(date_mask_dictionary,ordered_dict, max_or_min)
-    return max_or_min_dictionary
+def getDailyMinOrMax(ordered_dict, lookback, max_or_min):
+  lookback_mask = getLookbackMask(ordered_dict, lookback)
+  ordered_dict = filterDictByMask(ordered_dict, lookback_mask)
+  date_mask_dictionary = getDateMaskDictionary(ordered_dict)
+  max_or_min_dictionary = returnMaxOrMinDictionary(date_mask_dictionary,
+                                                   ordered_dict, max_or_min)
+  return max_or_min_dictionary
+
 
 def returnDataForInstapost(ordered_dict, timezone, units):
-    timeseries = ordered_dict[ordered_dict.keys()[0]]
-    timeseries = {parseDate(t[0]):float(t[1]) for t in timeseries}
-    output = {
-        "timeseries": timeseries,
-        "units": units,
-        "timezone": "GMT"
-  }
-    return output
+  timeseries = {}
+  for t in ordered_dict[ordered_dict.keys()[0]]:
+    try:
+      timeseries[parseDate(t[0])] = float(t[1])
+    except:
+      if args.verbose:
+        sys.stderr.write("Error parsing %s \n" % str(t))
+  output = {"timeseries": timeseries, "units": units, "timezone": "GMT"}
+  return output
+
 
 #--------------------------------------------------------------------------------
 # main()
@@ -228,24 +256,29 @@ if __name__ == "__main__":
     lookback = args.lookback
   else:
     lookback = '5'
-    
+
   for loc in config:
     for pe in config[loc]:
-        if pe == 'TX' or pe =='TN':
-            if pe =='TX': max_or_min = max
-            else: max_or_min = min
-            ordered_dict = returnOrderedDict(raw_data['TA'])
-            ordered_dict = OrderedDict([('DATE (UTC)',ordered_dict['DATE (UTC)']), 
-                                        (loc, ordered_dict[loc])])
-            daily_max_or_min = getDailyMinOrMax(ordered_dict,lookback,max_or_min)
-            output =  {config[loc][pe]:returnDataForInstapost(daily_max_or_min, "GMT", 'C')}
+      if pe == 'TX' or pe == 'TN':
+        if pe == 'TX':
+          max_or_min = max
         else:
-          if not pe in raw_data:
-            if args.verbose: sys.stderr.write("PE code %s not supported\n" % pe)
-            continue
-          output = {config[loc][pe]:getTS(loc, pe, raw_data[pe], lookback)}
-        print yaml.safe_dump(output, default_flow_style=False)
-        print "---"
+          max_or_min = min
+        ordered_dict = returnOrderedDict(raw_data['TA'])
+        ordered_dict = OrderedDict([('DATE (UTC)', ordered_dict['DATE (UTC)']),
+                                    (loc, ordered_dict[loc])])
+        daily_max_or_min = getDailyMinOrMax(ordered_dict, lookback, max_or_min)
+        output = {
+            config[loc][pe]:
+                returnDataForInstapost(daily_max_or_min, "GMT", 'C')
+        }
+      else:
+        if not pe in raw_data:
+          if args.verbose:
+            sys.stderr.write("PE code %s not supported\n" % pe)
+          continue
+        output = {config[loc][pe]: getTS(loc, pe, raw_data[pe], lookback)}
+      print yaml.safe_dump(output, default_flow_style=False)
+      print "---"
 
 # vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2
-

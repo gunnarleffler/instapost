@@ -1,0 +1,161 @@
+#!/usr/local/bin/python
+#!/usr/bin/env python
+helpstr = '''
+get_idp v1.0.0
+11/21/2017
+This program retireves observed data from the Idahopwer webservice.
+The program forces the webservice to return data in GMT
+POC: Gunnar Leffler
+
+FORMATTING
+==========
+
+configuration file example
+--------------------------
+
+HCD:
+  "18914": HCD.Flow-Out.Ave.~1Day.1Day.IDP-RAW
+
+Output
+------
+Output of this program is timeseries data in "instapost" YAML format
+
+PARAMETERS
+==========
+'''
+
+import sys, os, datetime, requests, re, random, argparse, json, yaml
+from xml.dom import minidom
+from zipfile import ZipFile
+from StringIO import StringIO
+
+#--------------------------------------------------------------------------------
+#Configuration
+#--------------------------------------------------------------------------------
+
+dataURL = "https://idastream.idahopower.com/Data/Export_Data/?dataset=ID&date=START&endDate=END&type=csv&timezone=GMT"
+
+units_xref = {
+    "Value (Cubic Feet Per Second)": "cfs",
+    "Value (Feet)": "ft",
+    "watt/(m**2)": "langley"
+}
+
+#--------------------------------------------------------------------------------
+#Helper Methods
+#--------------------------------------------------------------------------------
+
+
+def readFile(path):
+  f = open(path, "r")
+  output = f.read()
+  f.close()
+  return output
+
+
+def doTemplate(s, j):
+  for key in j:
+    s = s.replace(key, j[key])
+  return s
+
+
+def loadConfig(path):
+  if args.verbose:
+    sys.stderr.write("loading config file...")
+  output = yaml.safe_load(open(path))
+  if args.verbose:
+    sys.stderr.write(" %d entries found.\n" % (len(output)))
+  return output
+
+
+def getWebService(id, lookback):
+  """Gets a zipfile from the webservice and unzips it and returns a dictionary:
+     {"filename1":contents,
+      "filename2":contents
+     }
+     IDP insists on returning a zipfile, it is what it is......
+  """
+
+  template = {
+      "ID": id,
+      "END": datetime.datetime.now().strftime("%Y-%m-%d"),
+      "START": (datetime.datetime.now() - lookback).strftime("%Y-%m-%d")
+  }
+  output = {}
+  URL = doTemplate(dataURL, template)
+  if args.verbose:
+    sys.stderr.write("Getting %s \n" % (loc))
+    sys.stderr.write("%s \n" % (URL))
+  try:
+    raw = ZipFile(StringIO(requests.get(URL).content))
+    output = {name: raw.read(name) for name in raw.namelist()}
+  except:
+    output = {}
+    sys.stderr.write("could not retrieve %s " % (loc))
+  if args.raw:
+    print output
+  return output
+
+
+def parseWSdata(ws, tsid):
+
+  def getTS(ts):
+    out = {"timeseries": {}, "units": "", "timezone": "GMT"}
+    try:
+      t = ts.pop(0).split(",")
+      out["units"] = units_xref.get(t[1], t[1])
+      for t in ts:
+        t = t.split(",")
+        try:
+          out["timeseries"][t[0]] = float(t[1])
+        except:
+          if args.verbose:
+            sys.stderr.write("Error %s: %s" % (tsid, str(t)))
+    except:
+      sys.stderr.write("Error: %s" % (tsid))
+    return out
+
+  ws = ws.split("\r\n")
+  output = {}
+  if len(ws) < 3:
+    if args.verbose:
+      sys.stderr.write("No Data Found for %s" % tsid)
+  else:
+    ws.pop(0)
+    output[tsid] = getTS(ws)
+  return output
+
+
+#--------------------------------------------------------------------------------
+# main()
+#--------------------------------------------------------------------------------
+catalog = {}
+args = {}
+config = {}
+if __name__ == "__main__":
+  p = argparse.ArgumentParser(
+      description=helpstr, formatter_class=argparse.RawDescriptionHelpFormatter)
+  p.add_argument('config', help='YAML formatted Configuration file')
+  p.add_argument('-l', '--lookback', help='Lookback a number of days')
+  p.add_argument('-v', '--verbose', action='store_true', help='Work verbosely')
+  p.add_argument('-r', '--raw', action='store_true', help='Output raw data')
+  args = p.parse_args()
+  config = loadConfig(args.config)
+  if args.lookback:
+    lookback = datetime.timedelta(days=int(args.lookback))
+  else:
+    lookback = datetime.timedelta(days=7)
+  for loc in config:
+    for id in config[loc]:
+      output = {}
+      #try:
+      files = getWebService(id, lookback)
+      if len(files.keys()) > 0:
+        output = parseWSdata(files[files.keys()[0]], config[loc][id])
+      #except:
+      #  sys.stderr.write("Error occured while parsing %s.\n" % loc)
+      if output != {} and not args.raw:
+        print yaml.safe_dump(output, default_flow_style=False)
+        print "---"
+
+# vim: tabstop=2 expandtab shiftwidth=2 softtabstop=2

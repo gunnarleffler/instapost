@@ -1,0 +1,16 @@
+HCD:
+  "18914": HCD.Flow-Out.Inst.0.0.IDP-RAW
+  "19042": HCD.Flow-Out.Ave.~1Day.1Day.IDP-RAW
+  "20176": HCD.Elev-Forebay.Inst.~1Day.0.IDP-RAW
+BRN:
+  "20173": BRN.Elev-Forebay.Inst.0.0.IDP-RAW
+  "19089": BRN.Elev-Forebay.Inst.~1Day.0.IDP-RAW
+  "20171": BRN.Flow-In.Inst.~1Day.0.IDP-RAW
+SWAI:
+  "19090": SWAI.Flow.Inst.15Minutes.0.IDP-RAW
+IMNO:
+  "19045": IMNO.Flow.Inst.15Minutes.0.IDP-RAW
+  "19044": IMNO.Flow.Inst.~1Day.0.IDP-RAW
+  "19047": IMNO.Stage.Inst.15Minutes.0.IDP-RAW
+BULO:
+  "18982": BULO.Flow.Inst.15Minutes.0.IDP-RAW
