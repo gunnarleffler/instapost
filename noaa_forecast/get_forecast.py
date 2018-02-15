@@ -133,7 +133,7 @@ def create_ndfd_url(lat: str, long: str, ndfd = [''], units = 'e', start_date=('
 
 def get_ndfd_web_data(URL: str, verbose = True)->dict:
     """
-    Note: Parses NOAA NDFD XML data.  THe schema is not very regular so 
+    Note: Parses NOAA NDFD XML data.  The schema is not very regular so 
             there are a lot of exceptions and it is not able to parse all 
             available data right now.  
 
@@ -208,6 +208,27 @@ def get_ndfd_web_data(URL: str, verbose = True)->dict:
 
 
 def ndfd_to_instapost(site_name: str, lat: str, long: str, paths: dict, units = 'e', verbose = True)->dict:
+    """
+
+    Args:
+        
+        site_name:  Location name, only used in error handling, does not affect 
+                      output
+            
+        lat:        latitude.
+        
+        long:       longitude
+        
+        paths:      pathname dictionary {ndfd_element: pathname}
+                    
+        units:      "e" for English "m" for SI
+        
+        
+    Returns:
+        result_dict: Dictionary in Instapost format
+
+
+    """
     result_dict = {}
     ndfd = [k for k in paths.keys()]
     URL = create_ndfd_url(lat,long, ndfd=ndfd, units = units)
@@ -216,7 +237,6 @@ def ndfd_to_instapost(site_name: str, lat: str, long: str, paths: dict, units = 
         data_dict = get_ndfd_web_data(URL, verbose = verbose)
     except:
         sys.stderr.write("Error occured while parsing %s.\n" % site_name)
-    
     for k,v in data_dict.items():
         time_stamps = v['time_stamps']
         for param, param_data in v['parameters'].items():
@@ -245,24 +265,28 @@ if __name__ == "__main__":
     p.add_argument('config', help='YAML formatted Configuration file')
     p.add_argument('-v', '--verbose', action='store_true', help='Work verbosely')
     p.add_argument('-rj', '--rawJSON', action='store_true', help='Output JSON')
-    p.add_argument('-u', '--units', action='store_true', help='Set False for SI units')
+    p.add_argument('-si', '--SI', action='store_true', help='SI units')
     args = p.parse_args()
 
     verbose = args.verbose
     rawJSON = args.rawJSON
+    config = args.config
     
-    if args.units: 
-        units = 'e'
-    else:
+    if args.SI: 
         units = 'm'
+    else:
+        units = 'e'
      
-    config_dict = loadConfig('config_ndfd.yml', verbose = verbose)
+    config_dict = loadConfig(config, verbose = verbose)
     ndfd_param_dict = yaml.safe_load(open('ndfd.yml')) 
     
     output = {}
     for key, value in config_dict.items():
-        output.update(ndfd_to_instapost(site_name = key,  verbose = verbose, units = units, **value))
-        
+        try:
+            output.update(ndfd_to_instapost(site_name = key,  verbose = verbose, units = units, **value))
+        except:
+            print('\nNo data found for %s.\n' % key)
+            
     if rawJSON:
         print(json.dumps(output))
     else: 
