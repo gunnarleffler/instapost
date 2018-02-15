@@ -1,0 +1,6 @@
+Bonneville Dam Agrimet, WA:
+  lat: '45.64777778'
+  long: '-121.9311111'
+  paths:
+    temp: BNDW.Temp-Air.Inst.3Hour.0.NOAA-FCST
+    wspd: BNDW.Speed-Wind.Inst.3Hour.0.NOAA-FCST

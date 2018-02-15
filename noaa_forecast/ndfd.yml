@@ -1,0 +1,56 @@
+12 Hour Probability of Precipitation: pop12
+3 Hourly Temperature: temp
+Temperature: temp
+Apparent Temperature: appt
+Cloud Cover Amount: sky
+Convective Hazard Outlook: conhazo
+Dewpoint Temperature: dew
+Fire Weather from Dry Thunderstorms: dryfireo
+Fire Weather from Wind and Relative Humidity: critfireo
+Ice Accumulation: iceaccum
+Liquid Precipitation Amount: qpf
+Maximum Relative Humidity: maxrh
+Maximum Temperature: maxt
+Minimum Relative Humidity: minrh
+Minimum Temperature: mint
+Probabilistic Tropical Cyclone Wind Speed >34 Knots (Cumulative): cumw34
+Probabilistic Tropical Cyclone Wind Speed >34 Knots (Incremental): incw34
+Probabilistic Tropical Cyclone Wind Speed >50 Knots (Cumulative): cumw50
+Probabilistic Tropical Cyclone Wind Speed >50 Knots (Incremental): incw50
+Probabilistic Tropical Cyclone Wind Speed >64 Knots (Cumulative): cumw64
+Probabilistic Tropical Cyclone Wind Speed >64 Knots (Incremental): incw64
+Probability of 8- To 14-Day Average Temperature Above Normal: tmpabv14d
+Probability of 8- To 14-Day Average Temperature Below Normal: tmpblw14d
+Probability of 8- To 14-Day Total Precipitation Above Median: prcpabv14d
+Probability of 8- To 14-Day Total Precipitation Below Median: prcpblw14d
+Probability of Damaging Thunderstorm Winds: ptstmwinds
+Probability of Extreme Hail: pxhail
+Probability of Extreme Severe Thunderstorms: pxtotsvrtstm
+Probability of Extreme Thunderstorm Winds: pxtstmwinds
+Probability of Extreme Tornadoes: pxtornado
+Probability of Hail: phail
+Probability of One-Month Average Temperature Above Normal: tmpabv30d
+Probability of One-Month Average Temperature Below Normal: tmpblw30d
+Probability of One-Month Total Precipitation Above Median: prcpabv30d
+Probability of One-Month Total Precipitation Below Median: prcpblw30d
+Probability of Severe Thunderstorms: ptotsvrtstm
+Probability of Three-Month Average Temperature Above Normal: tmpabv90d
+Probability of Three-Month Average Temperature Below Normal: tmpblw90d
+Probability of Three-Month Total Precipitation Above Median: prcpabv90d
+Probability of Three-Month Total Precipitation Below Median: prcpblw90d
+Probability of Tornadoes: ptornado
+Real-time Mesoscale Analysis Dewpoint Temperature: td_r
+Real-time Mesoscale Analysis GOES Effective Cloud Amount: sky_r
+Real-time Mesoscale Analysis Precipitation: precipa_r
+Real-time Mesoscale Analysis Temperature: temp_r
+Real-time Mesoscale Analysis Wind Direction: wdir_r
+Real-time Mesoscale Analysis Wind Speed: wspd_r
+Relative Humidity: rh
+Snowfall Amount: snow
+Watches, Warnings, and Advisories: wwa
+Wave Height: waveh
+Weather: wx
+Weather Icons: icons
+Wind Direction: wdir
+Wind Gust: wgust
+Wind Speed: wspd
