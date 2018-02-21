@@ -1,0 +1,70 @@
+# all paths are are of the pattern:
+# PROJ.%-Saturation-TDG.Inst.1Hour.0.GOES-COMPUTED-RAW, with the last part of the
+# path name varying.  
+
+CHJ:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+CHQW:
+  path: NWSRADIO-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+WSBW:
+  path: CBT-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+WEL:
+  path: CBT-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+LWG:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+LGNW:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+LGSA:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+LGSW:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+LMNA: 
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+LMNW:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+CCIW:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+IHRA: 
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+IDSW:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+MCNA:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+MCPW:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+JDY:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+JHAW:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+TDA:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+TDDO:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+BON:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+WRNO:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
+CWMW:
+  path: GOES-COMPUTED-REV
+  methods:  ['or', 'wa', 'combined']
