@@ -25,7 +25,7 @@ import argparse
 import json
 import yaml
 import pandas as pd
-from cwms_read.cwms_read import get_cwms
+from cwms_read import get_cwms
 from datetime import timedelta
 
 def loadConfig(path: str, verbose = True)->dict:
