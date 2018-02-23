@@ -86,7 +86,7 @@ def washington_method(df:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
     df.index.name = 'date'
     roll = df.rolling(window = 12, min_periods = 1, axis = 0).mean()
     
-    wa_daily_max = roll.groupby(pd.Grouper(level='date', freq='D')).max().round(decimals = 0)
+    wa_daily_max = roll.groupby(pd.Grouper(level='date', freq='D')).max()
     return wa_daily_max
 
 def combine(orgn:pd.core.frame.DataFrame, wa:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
@@ -181,7 +181,7 @@ if __name__ == "__main__":
         path_end = value['path']
         paths.append('{}{}{}'.format(key, path, path_end))
     
-    df = get_cwms(paths, lookback = lookback, public = True)
+    df = get_cwms(paths, lookback = lookback, fill = False, public = True)
     meta = df.__dict__['metadata']
     data_dict = {'Washington': [x+'_%_Saturation_TDG' for x in washington],
                  'Oregon': [x+'_%_Saturation_TDG' for x in oregon],
@@ -199,18 +199,17 @@ if __name__ == "__main__":
     combined_wa = wa_daily_max[data_dict['Combined']]
     combined_or = or_daily_max[data_dict['Combined']]
     combined_daily_max = combine(wa_daily_max,or_daily_max)
-    new_pathname = '.%-Saturation-TDG.Avg.12Hour.0.'
-    for data in [(combined_daily_max,new_pathname +'Combined'), (wa_daily_max,new_pathname +'Washington'),(or_daily_max,new_pathname +'Oregon')]:
+    new_pathname = '.%-Saturation-TDG.Avg.~1Day.12Hour.CENWDP-COMPUTED-'
+    
+    for data in [(combined_daily_max,new_pathname +'Combined'), (wa_daily_max,new_pathname +'WA'),(or_daily_max,new_pathname +'OR')]:
         dataframe, path_name = data
         instapost = dataframe.apply(lambda x: pd_series_to_instapost(
-                                                x, 
-                                                x.name.split('_')[0]+path_name, 
+                                                x.dropna(), 
+                                                x.name.split('_')[0]+path_name + 'method-' + meta[x.name]['path'].split('-')[-1], 
                                                 meta[x.name]['units'], 
                                                 meta[x.name]['timezone']), axis = 0)
         
         if rawJSON:instapost.apply(lambda x: print(json.dumps(x)))
         else: instapost.apply(lambda x: print(yaml.dump(x)))
         
-     
-
 
