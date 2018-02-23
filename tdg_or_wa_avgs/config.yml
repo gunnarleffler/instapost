@@ -9,10 +9,10 @@ CHQW:
   path: NWSRADIO-COMPUTED-REV
   methods:  ['or', 'wa', 'combined']
 WSBW:
-  path: CBT-COMPUTED-REV
+  path: CBT-COMPUTED-RAW
   methods:  ['or', 'wa', 'combined']
 WEL:
-  path: CBT-COMPUTED-REV
+  path: CBT-COMPUTED-RAW
   methods:  ['or', 'wa', 'combined']
 LWG:
   path: GOES-COMPUTED-REV
