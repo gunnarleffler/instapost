@@ -61,6 +61,8 @@ def parse_element(element):
           dict_data[child_name] = child_dict
     if dict_data.keys() == ["#text"]:
       dict_data = dict_data["#text"]
+    elif dict_data.keys() == [u"#text"]:
+      dict_data = dict_data[u"#text"]
   return element.nodeName, dict_data
 
 
@@ -197,6 +199,12 @@ def get_ndfd_web_data(URL, verbose = True):
                         sys.stderr.write('\n%s is unitless\n' % data['name'])
                     except KeyError:
                         sys.stderr.write('\n%s is unitless\n' % data)
+            
+            if units == 'knots':
+                values = [x*1.15078 for x in values]
+                units = 'mph'
+            elif units == 'Fahrenheit':
+                units = 'F'
             try:
                 result_dict[key]['parameters'].update({data['name']:{'values':values, 'units':units}})
             except KeyError:
