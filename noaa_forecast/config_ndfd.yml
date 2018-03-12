@@ -1,66 +1,66 @@
 Bonneville Dam Agrimet, WA:
   lat: '45.64777778'
-  long: '-121.9311111'
+  lon: '-121.9311111'
   paths:
-    temp: BNDW.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: BNDW.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: BNDW.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: BNDW.Speed-Wind.Inst.3Hours.0.NOAA-FCST
 Chief Joseph Dam AgriMet, WA:
   lat: '48'
-  long: '-119.6666667'
+  lon: '-119.6666667'
   paths:
-    temp: CJDW.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: CJDW.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: CJDW.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: CJDW.Speed-Wind.Inst.3Hours.0.NOAA-FCST
 Dworshak-Dent Acres AgriMet, ID:
   lat: '46.6233333'
-  long: '-116.2205556'
+  lon: '-116.2205556'
   paths:
-    temp: DENI.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: DENI.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: DENI.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: DENI.Speed-Wind.Inst.3Hours.0.NOAA-FCST
 Grand Coulee Dam AgriMet, WA:
   lat: '47.94527778'
-  long: '-118.9536111'
+  lon: '-118.9536111'
   paths:
-    temp: GCDW.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: GCDW.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: GCDW.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: GCDW.Speed-Wind.Inst.3Hours.0.NOAA-FCST
 The Dalles Municipal Airport, NWS:
   lat: '45.61861111'
-  long: '-121.1661111'
+  lon: '-121.1661111'
   paths:
-    temp: DLS.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: DLS.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: DLS.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: DLS.Speed-Wind.Inst.3Hours.0.NOAA-FCST
 Hermiston 2NW AgriMet:
   lat: '45.798889'
-  long: '-119.529444'
+  lon: '-119.529444'
   paths:
-    temp: HERO.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: HERO.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: HERO.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: HERO.Speed-Wind.Inst.3Hours.0.NOAA-FCST
 Pangborn Memorial Airport, NWS, Wenatchee, WA:
   lat: '47.39777778'
-  long: '-120.2013889'
+  lon: '-120.2013889'
   paths:
-    temp: EATW.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: EATW.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: EATW.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: EATW.Speed-Wind.Inst.3Hours.0.NOAA-FCST
 Tri-Cities Airport, NWS, Pasco, WA:
   lat: '46.283333'
-  long: '-119.116667'
+  lon: '-119.116667'
   paths:
-    temp: PSCW.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: PSCW.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: PSCW.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: PSCW.Speed-Wind.Inst.3Hours.0.NOAA-FCST
 Troutdale Airport, NWS OR:
   lat: '45.5491667'
-  long: '-122.4'
+  lon: '-122.4'
   paths:
-    temp: TTD.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: TTD.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: TTD.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: TTD.Speed-Wind.Inst.3Hours.0.NOAA-FCST
 Lake Bryan-Rice Bar AgriMet, WA:
   lat: '46.6919444'
-  long: '-117.6525'
+  lon: '-117.6525'
   paths:
-    temp: LBRW.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: LBRW.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: LBRW.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: LBRW.Speed-Wind.Inst.3Hours.0.NOAA-FCST
 Silcott Island AgriMet, WA:
   lat: '46.4153942'
-  long: '-117.19432'
+  lon: '-117.19432'
   paths:
-    temp: SILW.Temp-Air.Inst.3Hour.0.NOAA-FCST
-    wspd: SILW.Speed-Wind.Inst.3Hour.0.NOAA-FCST
+    temp: SILW.Temp-Air.Inst.3Hours.0.NOAA-FCST
+    wspd: SILW.Speed-Wind.Inst.3Hours.0.NOAA-FCST

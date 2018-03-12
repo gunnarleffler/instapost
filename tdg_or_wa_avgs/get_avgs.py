@@ -36,6 +36,10 @@ def loadConfig(path: str, verbose = True)->dict:
     sys.stderr.write(" %d entries found.\n" % (len(output)))
   return output
 
+
+def set_time_index(ts_index, hour_int = 0, minute_int = 0, second_int = 0):
+    return [x.replace(hour = hour_int, minute = minute_int, second = second_int) for x in ts_index]
+
 def oregon_method(df:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
     """
     Args:
@@ -54,6 +58,8 @@ def oregon_method(df:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
         .groupby(pd.Grouper(level='date', freq='D')) \
         .aggregate(lambda x: x.sort_values(ascending = False) \
         .reset_index(drop = True).iloc[:12].mean())
+    orgn.index = set_time_index(orgn.index, hour_int = 12)
+    orgn.index.name = 'date'
     return orgn
 
 
@@ -85,8 +91,9 @@ def washington_method(df:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:
     df.index = index
     df.index.name = 'date'
     roll = df.rolling(window = 12, min_periods = 1, axis = 0).mean()
-    
     wa_daily_max = roll.groupby(pd.Grouper(level='date', freq='D')).max()
+    wa_daily_max.index = set_time_index(wa_daily_max.index, hour_int = 12)
+    wa_daily_max.index.name = 'date'
     return wa_daily_max
 
 def combine(orgn:pd.core.frame.DataFrame, wa:pd.core.frame.DataFrame) -> pd.core.frame.DataFrame:

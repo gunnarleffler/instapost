@@ -12,7 +12,7 @@ def reindex(df, start_date, end_date, freq):
         df.index.rename('date', inplace = True)
         return df
 
-def get_frequency(index: pd.core.indexes.datetimes.DatetimeIndex)->str:
+def get_frequency(index):
     """
     Args:
         
