@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/local/bin/python
 helpstr = '''
   _           _                        _   
  (_)_ __  ___| |_ __ _ _ __   ___  ___| |_ 
@@ -162,7 +162,10 @@ class dataService:
     for row in valueList:
       (stamp, val, quality) = row[:3]
       times.append((stamp - zero_time).total_seconds() * 1000)
-      values.append(val)
+      if quality == 5:
+        values.append(None)
+      else:
+        values.append(val)
       qualities.append(quality)
       log("%s\t%s\t%s\t%s\t%s" % (tsid, stamp.isoformat(), val, units, quality),
           level="STOR")
@@ -229,6 +232,8 @@ def process(raw, fmt):
           if tstamp.tzinfo == None:
             tstamp = mytz.localize(tstamp)
           if type(rawts[key]) is dict:
+            if "value" in rawts[key]: rawts[key]["val"] = rawts[key]['value']
+            if "quality" in rawts[key]: rawts[key]["qual"] = rawts[key]['quality']
             qual = conf["qualityFlags"].get(rawts[key].get("qual","Null").upper(),0)
             ts.insert(tstamp, float(rawts[key].get("val",None)), quality = qual)
           else:

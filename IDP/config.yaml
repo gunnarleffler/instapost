@@ -2,6 +2,7 @@ HCD:
   "18914": HCD.Flow-Out.Inst.0.0.IDP-RAW
   "19042": HCD.Flow-Out.Ave.~1Day.1Day.IDP-RAW
   "20176": HCD.Elev-Forebay.Inst.~1Day.0.IDP-RAW
+  "20181": HCD.Flow-Out.Inst.0.0.IDP-FCST
 BRN:
   "20173": BRN.Elev-Forebay.Inst.0.0.IDP-RAW
   "19089": BRN.Elev-Forebay.Inst.~1Day.0.IDP-RAW
