@@ -33,7 +33,7 @@ from StringIO import StringIO
 #Configuration
 #--------------------------------------------------------------------------------
 
-dataURL = "https://idastream.idahopower.com/Data/Export_Data/?dataset=ID&date=START&endDate=END&type=csv&timezone=GMT"
+dataURL = "https://idastream.idahopower.com/Data/Export_Data/?dataset=ID&date=START&endDate=END&type=csv&exporttype=csv&timezone=GMT"
 
 units_xref = {
     "Value (Cubic Feet Per Second)": "cfs",
@@ -78,7 +78,7 @@ def getWebService(id, lookback):
 
   template = {
       "ID": id,
-      "END": datetime.datetime.now().strftime("%Y-%m-%d"),
+      "END": (datetime.datetime.now() + datetime.timedelta(days=7)).strftime("%Y-%m-%d"),
       "START": (datetime.datetime.now() - lookback).strftime("%Y-%m-%d")
   }
   output = {}

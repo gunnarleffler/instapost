@@ -1,8 +1,8 @@
 #!/usr/local/bin/python
 #!/usr/bin/env python
 helpstr = '''
-get_mesowest v1.0.0
-10/02/2017
+get_mesowest v1.0.1
+11/29/2017
 This program retireves observed data from the noaa mesowest XML service.
 POC: Gunnar Leffler
 
@@ -137,9 +137,10 @@ def parseWSdata(ws, conf, loc):
 
   def getTS(ts, myPE):
     out = {"timeseries": {}, "units": "", "timezone": "US/Pacific"}
-    #try:
     if 1 == 1:
+      if type(ts) is dict: ts = [ts]
       for t in ts:
+        if type(t["variable"]) is dict: t["variable"] = [t["variable"]]
         for item in t["variable"]:
           if myPE == item["@description"]:
             try:
@@ -148,8 +149,6 @@ def parseWSdata(ws, conf, loc):
                 out["units"] = units_xref.get(item["@unit"], item["@unit"])
             except:
               pass
-    #except:
-    #  pass
     return out
 
   ws = ws.get("station", {})
@@ -215,10 +214,10 @@ if __name__ == "__main__":
     lookback = '24'
   output = {}
   for loc in config:
-    try:
-      output = parseWSdata(getWebService(loc, lookback), config[loc], loc)
-    except:
-      sys.stderr.write("Error occured while parsing %s.\n" % loc)
+    #try:
+    output = parseWSdata(getWebService(loc, lookback), config[loc], loc)
+    #except:
+    #  sys.stderr.write("Error occured while parsing %s.\n" % loc)
     if not args.rawXML and not args.rawJSON and output != {}:
       print yaml.safe_dump(output, default_flow_style=False)
       print "---"

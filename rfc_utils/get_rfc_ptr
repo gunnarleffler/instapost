@@ -146,9 +146,9 @@ def getWebService(catalog):
     if fname > latest[product]: latest[product] = fname
   for product in latest:
     fname = latest[product]
-    if args.verbose:
-      sys.stderr.write("Getting %s \n" % (fname))
     URL = dataURL + fname
+    if args.verbose:
+      sys.stderr.write("Getting %s \n" % (URL))
     try:
       raw = requests.get(URL).text
     except:
@@ -339,6 +339,9 @@ if __name__ == "__main__":
     lookback = '5'
   output = {}
   for loc in config:
+    if config[loc] == None:
+      sys.stderr.write("Error, nothing defined for %s." % loc)
+      continue
     for pe in config[loc]:
       timefilter = config[loc][pe].get("timefilter", "")
       wsPE = config[loc][pe].get(

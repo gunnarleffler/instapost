@@ -57,10 +57,12 @@ def strip_float(input):
 ###############################################################################
 
 service = {
-    'daily'       : 'daily.pl',
-    'daily_alt'   : 'webarccsv.pl',
-    'realtime'    : 'instant.pl',
-    'realtime_alt': 'webdaycsv.pl'
+    'daily_alt'        : 'daily.pl',
+    'daily_alt2'    : 'webarccsv.pl',
+    'daily'   : 'yak/webdaycsv.pl',
+    'realtime_alt'     : 'instant.pl',
+    'realtime_alt2' : 'webdaycsv.pl',
+    'realtime': 'yak/webdaycsv.pl'
 }
 
 parser = argparse.ArgumentParser()
@@ -124,6 +126,12 @@ for line in open(args.station_file):
     if mode == 'daily': url = url.replace(service['daily'], service['daily_alt'])
     if args.debug == True:
       sys.stderr.write('No data found trying alternate service:\n%s\n' % (url))
+    input = process_usbr(mode, requests.get(url, verify=False).text)
+  if len(input) < 1:
+    if mode == 'realtime': url = url.replace(service['realtime_alt'], service['realtime_alt2'])
+    if mode == 'daily': url = url.replace(service['daily_alt'], service['daily_alt2'])
+    if args.debug == True:
+      sys.stderr.write('No data found trying alternate service 2:\n%s\n' % (url))
     input = process_usbr(mode, requests.get(url, verify=False).text)
 
   print '{"%s":{\n "timezone": "%s",\n "units": "%s",\n "timeseries":{' % (
