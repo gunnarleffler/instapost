@@ -25,6 +25,8 @@ PARAMETERS
 import sys, requests, argparse, json, yaml
 from xml.dom import minidom
 import unicodedata
+from datetime import datetime, timedelta
+
 #--------------------------------------------------------------------------------
 #Configuration
 #--------------------------------------------------------------------------------
@@ -161,9 +163,20 @@ def get_ndfd_web_data(URL, verbose = True):
         key = time['layout-key']#['#text']
          
         time_list = time['start-valid-time']
+        
         if not isinstance(time_list, list): 
             time_list = [time_list]
-        time_stamps =  [x[:19]for x in time_list]
+        #time is on a location basis, converting all tz's to utc
+        time_stamps = []
+        for time in time_list:
+            time_stamp = datetime.strptime(time[:19], '%Y-%m-%dT%H:%M:%S')
+            offset = time[20:]
+            hours = int(offset.split(':')[0])
+            minutes = int(offset.split(':')[1])
+            td = timedelta(hours = hours, minutes = minutes)
+            time_stamp = time_stamp - td
+            time_stamp = str(time_stamp)
+            time_stamps.append(time_stamp)
         result_dict.update({key:{'time_stamps':time_stamps}})
     parameters = data_dict['parameters']
     params = list(parameters.keys())[1:]
@@ -289,6 +302,7 @@ if __name__ == "__main__":
     if args.verbose:
         verbose = args.verbose
     else: verbose = False
+    
     
     config_dict = loadConfig(config, verbose = verbose)
     ndfd_param_dict = yaml.safe_load(open('ndfd.yml')) 
